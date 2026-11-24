@@ -84,7 +84,7 @@ button {
 
 /* Logo image size inside inner headers (larger for clear visibility on sub-screens) */
 .brand-logo-only img {
-  height: 48px; /* Prominent header logo height */
+  height: 100px; /* Prominent header logo height */
   width: auto; /* Keep natural aspect ratio */
   display: block; /* Prevent inline baseline gap */
 }
