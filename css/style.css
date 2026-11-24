@@ -1243,6 +1243,6 @@ h1, h2, h3, p {
 /* Phone-sized screens: match header logo visual weight roughly to the "LEVEL 2" badge */
 @media (max-width: 480px) {
   .brand-logo-only img {
-    height: 28px; /* Compact phone header logo matching badge height */
+    height: 75px; /* Compact phone header logo matching badge height */
   }
 }
