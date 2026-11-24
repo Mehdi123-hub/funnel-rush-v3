@@ -1239,10 +1239,3 @@ h1, h2, h3, p {
   color: var(--muted); /* Muted text */
   margin: 0; /* Clean margin */
 }
-
-/* Phone-sized screens: double the header logo height to 56px */
-@media (max-width: 480px) {
-  .brand-logo-only img {
-    height: 56px; /* Twice as tall as previous 28px phone logo height */
-  }
-}
