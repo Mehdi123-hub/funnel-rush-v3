@@ -22,8 +22,8 @@
     <!-- 1. HOME SCREEN -->
     <section id="screen-home" class="home-screen">
       <div>
-        <!-- Brand logo -->
-        <img class="hero-logo" src="./FunnelRush_Logo.png">
+        <!-- Brand logo (already includes Funnel Rush text) -->
+        <img class="hero-logo" src="./FunnelRush_Logo.png" alt="Funnel Rush">
         <!-- Game tagline -->
         <h1 class="hero-title">Turn strangers into loyal customers.</h1>
         <!-- Format and player count note -->
@@ -58,8 +58,8 @@
       <div>
         <!-- Button advancing to player setup -->
         <button id="btn-new-game" type="button" class="cta-btn">New game</button>
-        <!-- Button opening the Card Guide page -->
-        <a href="./guide.html" class="guide-link-btn">Card guide <span>&rarr;</span></a>
+        <!-- Bottom CARDS button opening the Card Guide -->
+        <a href="./guide.html" class="cards-pill-btn"><span class="cards-icon" aria-hidden="true"></span><span>CARDS</span></a>
         <!-- Helper note for QR re-entry -->
         <p class="helper-note">Scan the board's APP QR code to return to your game.</p>
       </div>
@@ -67,9 +67,9 @@
 
     <!-- 2. PLAYERS SCREEN -->
     <section id="screen-players" class="hidden">
-      <!-- Top header with logo and active level badge -->
+      <!-- Top header with logo only and active level badge -->
       <header class="top-bar">
-        <span class="brand-mini"><img src="./FunnelRush_Logo.png" alt=""> FUNNEL RUSH</span>
+        <span class="brand-logo-only"><img src="./FunnelRush_Logo.png" alt="Funnel Rush"></span>
         <span id="players-level-badge" class="level-badge is-level-2">Level 2</span>
       </header>
 
@@ -94,13 +94,15 @@
 
       <!-- Start round 1 button -->
       <button id="btn-start-game" type="button" class="cta-btn">Start game</button>
+      <!-- Bottom CARDS button below player names and start button -->
+      <a href="./guide.html" class="cards-pill-btn"><span class="cards-icon" aria-hidden="true"></span><span>CARDS</span></a>
     </section>
 
     <!-- 3. ROUND SCREEN -->
     <section id="screen-round" class="hidden">
-      <!-- Top header with logo and level badge -->
+      <!-- Top header with logo only and level badge -->
       <header class="top-bar">
-        <span class="brand-mini"><img src="./FunnelRush_Logo.png" alt=""> FUNNEL RUSH</span>
+        <span class="brand-logo-only"><img src="./FunnelRush_Logo.png" alt="Funnel Rush"></span>
         <span id="round-level-badge" class="level-badge is-level-2">Level 2</span>
       </header>
 
@@ -116,13 +118,15 @@
 
       <!-- Single contextual round action button -->
       <button id="btn-round-action" type="button" class="cta-btn">Round 1: draw event</button>
+      <!-- Bottom CARDS button below the round event and primary action -->
+      <a href="./guide.html" class="cards-pill-btn"><span class="cards-icon" aria-hidden="true"></span><span>CARDS</span></a>
     </section>
 
     <!-- 4. FINAL SCORES SCREEN -->
     <section id="screen-scores" class="hidden">
-      <!-- Top header with logo and level badge -->
+      <!-- Top header with logo only and level badge -->
       <header class="top-bar">
-        <span class="brand-mini"><img src="./FunnelRush_Logo.png" alt=""> FUNNEL RUSH</span>
+        <span class="brand-logo-only"><img src="./FunnelRush_Logo.png" alt="Funnel Rush"></span>
         <span id="scores-level-badge" class="level-badge is-level-2">Level 2</span>
       </header>
 
@@ -137,13 +141,15 @@
         <!-- Submit button to calculate final points -->
         <button id="btn-calc-scores" type="submit" class="cta-btn is-gold">Calculate</button>
       </form>
+      <!-- Bottom CARDS button at the bottom of the scores screen -->
+      <a href="./guide.html" class="cards-pill-btn"><span class="cards-icon" aria-hidden="true"></span><span>CARDS</span></a>
     </section>
 
     <!-- 5. RESULTS SCREEN -->
     <section id="screen-results" class="hidden">
-      <!-- Top header with logo and level badge -->
+      <!-- Top header with logo only and level badge -->
       <header class="top-bar">
-        <span class="brand-mini"><img src="./FunnelRush_Logo.png" alt=""> FUNNEL RUSH</span>
+        <span class="brand-logo-only"><img src="./FunnelRush_Logo.png" alt="Funnel Rush"></span>
         <span id="results-level-badge" class="level-badge is-level-2">Level 2</span>
       </header>
 
@@ -163,6 +169,8 @@
 
       <!-- Button opening the reset confirmation modal -->
       <button id="btn-results-new-game" type="button" class="cta-btn is-outline">New game</button>
+      <!-- Bottom CARDS button at the bottom of the results screen -->
+      <a href="./guide.html" class="cards-pill-btn"><span class="cards-icon" aria-hidden="true"></span><span>CARDS</span></a>
     </section>
   </main>
 
