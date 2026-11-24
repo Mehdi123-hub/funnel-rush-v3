@@ -1,161 +1,167 @@
+// Total number of rounds per game session
 export const TOTAL_ROUNDS = 6;
+
+// Total prospect tokens each player starts with (Market + Funnel = 30)
 export const TOTAL_TOKENS = 30;
 
+// Player token colors assigned in player order (2 to 4 players)
 export const PLAYER_COLORS = [
-  "#00b386", // Vert / Sarcelle
-  "#ec4899", // Rose
-  "#f97316", // Orange
-  "#3b82f6"  // Bleu
+  "#00b386", // Player 1 token color (teal/green)
+  "#ec4899", // Player 2 token color (pink)
+  "#f97316", // Player 3 token color (orange)
+  "#3b82f6"  // Player 4 token color (blue)
 ];
 
+// The 5 marketing funnel stages with their display names and colors
 export const FLOORS = [
-  { id: "notoriete",     name: "Notoriété",     color: "#CDEFF3" },
-  { id: "interet",       name: "Intérêt",       color: "#8FDCE5" },
-  { id: "consideration", name: "Considération", color: "#3FBCCB" },
-  { id: "conversion",    name: "Conversion",    color: "#1A8291" },
-  { id: "fidelisation",  name: "Fidélisation",  color: "#0E4F58" }
+  { id: "awareness",     name: "Awareness",     color: "#CDEFF3" }, // Stage 1: top of funnel
+  { id: "interest",      name: "Interest",      color: "#8FDCE5" }, // Stage 2: engagement
+  { id: "consideration", name: "Consideration", color: "#3FBCCB" }, // Stage 3: evaluation
+  { id: "conversion",    name: "Conversion",    color: "#1A8291" }, // Stage 4: purchase
+  { id: "loyalty",       name: "Loyalty",       color: "#0E4F58" }  // Stage 5: retention
 ];
 
+// Action cards available in Level 1 (12 cards) and Level 2 (3 additional cards = 15 total)
 export const CARDS = [
   {
-    id: "pub-instagram",
-    name: "Pub Instagram",
-    floor: "notoriete",
-    cost: 3,
-    level: 1,
-    effect: "Ajoutez 4 prospects du Marché à l'étage Notoriété.",
-    definition: "Publicité payante diffusée sur Instagram auprès d'une cible choisie (âge, intérêts, zone). Elle touche vite beaucoup de monde.",
-    example: "Sponsoriser une Story auprès des 18-30 ans passionnés de sport pour faire connaître votre application."
+    id: "instagram-ad", // Unique slug used for card anchors
+    name: "Instagram Ad", // Card display name
+    floor: "awareness", // Funnel stage identifier
+    cost: 3, // Coin cost from the bank
+    level: 1, // Available starting at Level 1
+    effect: "Move 4 prospects from Market to Awareness.", // Exact mechanical effect
+    definition: "Paid advertising shown on Instagram to a chosen audience (age, interests, location). It reaches many people quickly.", // Marketing lever definition
+    example: "Sponsoring a Story aimed at 18–30-year-olds who love fitness to introduce your app." // Concrete example
   },
   {
-    id: "article-seo",
-    name: "Article SEO",
-    floor: "notoriete",
+    id: "seo-article",
+    name: "SEO Article",
+    floor: "awareness",
     cost: 1,
     level: 1,
-    effect: "Ajoutez 2 prospects du Marché à l'étage Notoriété.",
-    definition: "Article de blog optimisé pour apparaître dans les résultats Google. Peu coûteux, mais le trafic arrive lentement.",
-    example: "Publier un guide « Comment gérer son budget étudiant » ciblant les requêtes de recherche."
+    effect: "Move 2 prospects from Market to Awareness.",
+    definition: "A blog post optimized to appear in search engine results. Low cost, but organic traffic builds up slowly.",
+    example: "Publishing a guide on “How to manage a student budget” targeting search queries."
   },
   {
-    id: "partenariat-influenceur",
-    name: "Partenariat influenceur",
-    floor: "notoriete",
+    id: "influencer-partnership",
+    name: "Influencer Partnership",
+    floor: "awareness",
     cost: 5,
     level: 1,
-    effect: "Ajoutez 6 prospects du Marché à l'étage Notoriété.",
-    definition: "Collaboration avec une personne suivie par une large communauté, qui présente la marque à son audience.",
-    example: "Faire tester votre produit par un créateur de contenu de confiance dans une vidéo dédiée."
+    effect: "Move 6 prospects from Market to Awareness.",
+    definition: "A collaboration with a creator followed by a large community who introduces your brand to their audience.",
+    example: "Having a trusted creator review your product in a dedicated video."
   },
   {
     id: "newsletter",
     name: "Newsletter",
-    floor: "interet",
+    floor: "interest",
     cost: 2,
     level: 1,
-    effect: "Faites descendre 3 prospects de Notoriété à Intérêt.",
-    definition: "Email envoyé régulièrement aux abonnés pour garder le contact et entretenir leur intérêt.",
-    example: "Envoyer un résumé hebdomadaire avec les nouveautés et conseils pratiques de la marque."
+    effect: "Move 3 prospects from Awareness to Interest.",
+    definition: "An email sent regularly to subscribers to stay in touch and keep their interest alive.",
+    example: "Sending a weekly digest with product updates and helpful tips."
   },
   {
-    id: "livre-blanc",
-    name: "Livre blanc",
-    floor: "interet",
+    id: "white-paper",
+    name: "White Paper",
+    floor: "interest",
     cost: 3,
     level: 1,
-    effect: "Faites descendre 4 prospects de Notoriété à Intérêt.",
-    definition: "Guide gratuit offert en échange d'une adresse email. C'est un « lead magnet » : il transforme un visiteur en contact.",
-    example: "Proposer un PDF « 10 erreurs à éviter au lancement d'une startup » contre une inscription."
+    effect: "Move 4 prospects from Awareness to Interest.",
+    definition: "A free in-depth guide offered in exchange for an email address—a lead magnet that turns visitors into contacts.",
+    example: "Offering a PDF called “10 mistakes to avoid when launching a startup” on sign-up."
   },
   {
-    id: "webinaire",
-    name: "Webinaire",
+    id: "webinar",
+    name: "Webinar",
     floor: "consideration",
     cost: 3,
     level: 1,
-    effect: "Faites descendre 3 prospects d'Intérêt à Considération.",
-    definition: "Conférence en ligne en direct où la marque montre son expertise et répond aux questions.",
-    example: "Animer une démonstration en direct de 30 minutes suivie d'une session de questions-réponses."
+    effect: "Move 3 prospects from Interest to Consideration.",
+    definition: "A live online session where the brand demonstrates its expertise and answers questions.",
+    example: "Hosting a 30-minute live product demo followed by a Q&A."
   },
   {
-    id: "avis-clients",
-    name: "Avis clients",
+    id: "customer-reviews",
+    name: "Customer Reviews",
     floor: "consideration",
     cost: 2,
     level: 1,
-    effect: "Faites descendre 2 prospects à Considération. Posez ensuite la carte face visible devant vous (hors de votre main) : elle annule le prochain « Mauvais avis ».",
-    definition: "Notes et témoignages de clients. Cette « preuve sociale » rassure ceux qui hésitent.",
-    example: "Afficher une note de 4,8/5 et des retours clients vérifiés sur la page produit."
+    effect: "Move 2 prospects to Consideration. Place this card face up in front of you (outside your hand): it cancels the next “Bad Review”.",
+    definition: "Ratings and testimonials from customers. This social proof reassures prospects who are comparing options.",
+    example: "Displaying a 4.8/5 rating and verified customer quotes on your product page."
   },
   {
     id: "marketing-automation",
-    name: "Marketing automation",
+    name: "Marketing Automation",
     floor: "consideration",
     cost: 4,
     level: 2,
-    effect: "Faites descendre 2 prospects d'Intérêt à Considération ET 1 prospect de Notoriété à Intérêt.",
-    definition: "Envoi automatique d'emails ou de messages déclenchés par le comportement du prospect (inscription, clic, visite), pour l'accompagner pas à pas sans effort manuel.",
-    example: "Déclencher automatiquement une séquence d'emails de bienvenue après le téléchargement d'un guide."
+    effect: "Move 2 prospects from Interest to Consideration AND 1 prospect from Awareness to Interest.",
+    definition: "Automated emails or messages triggered by a prospect's behavior (sign-up, click, visit) to guide them step by step without manual effort.",
+    example: "Automatically triggering a welcome sequence after someone downloads a guide."
   },
   {
-    id: "essai-gratuit",
-    name: "Essai gratuit",
+    id: "free-trial",
+    name: "Free Trial",
     floor: "conversion",
     cost: 4,
     level: 1,
-    effect: "Faites descendre 3 prospects de Considération à Conversion.",
-    definition: "Période d'utilisation gratuite du produit avant l'achat, qui lève les derniers doutes.",
-    example: "Offrir 14 jours d'accès complet avant le premier prélèvement d'un abonnement."
+    effect: "Move 3 prospects from Consideration to Conversion.",
+    definition: "A free period to try the product before paying, removing final doubts before purchase.",
+    example: "Offering a 14-day full access trial before a monthly subscription starts."
   },
   {
-    id: "code-promo",
-    name: "Code promo",
+    id: "promo-code",
+    name: "Promo Code",
     floor: "conversion",
     cost: 2,
     level: 1,
-    effect: "Faites descendre 2 prospects à Conversion. Vos revenus sont divisés par 2 cette manche.",
-    definition: "Réduction qui pousse à acheter maintenant, au prix d'une marge plus faible.",
-    example: "Proposer -20 % sur la première commande pendant 48 heures."
+    effect: "Move 2 prospects to Conversion. Your revenue is divided by 2 this round.",
+    definition: "A discount that encourages immediate purchase at the cost of a lower margin.",
+    example: "Offering 20% off a first order for 48 hours."
   },
   {
-    id: "test-ab",
-    name: "Test A/B",
+    id: "ab-test",
+    name: "A/B Test",
     floor: "conversion",
     cost: 3,
     level: 2,
-    effect: "Faites descendre 2 prospects à Conversion. Sur un dé de 2 ou 3, la carte marche quand même normalement.",
-    definition: "On montre deux versions d'une page ou d'un email à deux groupes, puis on garde celle qui convertit le mieux.",
-    example: "Tester deux formulations de bouton d'achat pour voir laquelle génère le plus de commandes."
+    effect: "Move 2 prospects to Conversion. On a die roll of 2 or 3, the card still succeeds normally.",
+    definition: "Testing two versions of a page or email with two groups and keeping whichever converts better.",
+    example: "Comparing two checkout button labels to see which gets more completed orders."
   },
   {
-    id: "programme-fidelite",
-    name: "Programme de fidélité",
-    floor: "fidelisation",
+    id: "loyalty-program",
+    name: "Loyalty Program",
+    floor: "loyalty",
     cost: 3,
     level: 1,
-    effect: "Faites descendre 2 clients de Conversion à Fidélisation.",
-    definition: "Points, avantages ou statuts réservés aux clients pour les faire revenir.",
-    example: "Cumuler des points à chaque commande échangeables contre des avantages exclusifs."
+    effect: "Move 2 customers from Conversion to Loyalty.",
+    definition: "Points, perks, or tiers reserved for existing customers to bring them back.",
+    example: "Earning reward points on every order that can be redeemed for perks."
   },
   {
-    id: "parrainage",
-    name: "Parrainage",
-    floor: "fidelisation",
+    id: "referral-program",
+    name: "Referral Program",
+    floor: "loyalty",
     cost: 3,
     level: 1,
-    effect: "Faites descendre 1 client à Fidélisation ET ajoutez 2 prospects à Notoriété.",
-    definition: "Un client recommande la marque à ses proches, souvent contre une récompense.",
-    example: "Offrir un bonus au parrain et au filleul après la première commande du filleul."
+    effect: "Move 1 customer to Loyalty AND add 2 prospects to Awareness.",
+    definition: "Customers recommend the brand to friends and family, often in exchange for a reward.",
+    example: "Giving both the referrer and friend a bonus once the friend makes a first purchase."
   },
   {
-    id: "service-client",
-    name: "Service client",
-    floor: "fidelisation",
+    id: "customer-support",
+    name: "Customer Support",
+    floor: "loyalty",
     cost: 2,
     level: 2,
-    effect: "Faites descendre 1 client à Fidélisation. Pas de dé du churn pour vous cette manche.",
-    definition: "Aide apportée aux clients après l'achat. Un client bien accompagné reste plus longtemps et recommande la marque.",
-    example: "Mettre en place un support réactif et un suivi personnalisé après l'achat."
+    effect: "Move 1 customer to Loyalty. No churn die roll for you this round.",
+    definition: "Help provided to customers after purchase. Well-supported customers stay longer and recommend the brand.",
+    example: "Providing fast live support and onboarding check-ins after a customer joins."
   },
   {
     id: "retargeting",
@@ -163,71 +169,72 @@ export const CARDS = [
     floor: "consideration",
     cost: 3,
     level: 1,
-    effect: "Ramenez 2 prospects de Perdus à Considération.",
-    definition: "Publicité montrée aux personnes qui ont déjà visité le site sans acheter, pour les faire revenir.",
-    example: "Afficher une publicité de rappel aux visiteurs ayant abandonné leur panier."
+    effect: "Bring 2 prospects from Lost back to Consideration.",
+    definition: "Ads shown to people who already visited the site without buying, bringing them back into the funnel.",
+    example: "Showing a reminder ad to visitors who left items in their cart."
   }
 ];
 
+// Round events: 6 for Level 1, plus 4 harder events unlocked in Level 2 (10 total)
 export const EVENTS = [
   {
-    id: "mise-a-jour-google",
-    name: "Mise à jour Google",
-    level: 1,
-    effect: "Les cartes Article SEO n'ajoutent qu'1 prospect cette manche."
+    id: "google-algorithm-update", // Unique event identifier
+    name: "Google Algorithm Update", // Event title
+    level: 1, // Available in Level 1 and Level 2
+    effect: "SEO Article cards add only 1 prospect this round." // Round effect
   },
   {
-    id: "mauvais-avis",
-    name: "Mauvais avis",
+    id: "bad-review",
+    name: "Bad Review",
     level: 1,
-    effect: "Chaque joueur perd 2 prospects en Considération. La carte Avis clients vous protège."
+    effect: "Each player loses 2 prospects in Consideration. Customer Reviews protects you."
   },
   {
-    id: "post-viral",
-    name: "Post viral",
+    id: "viral-post",
+    name: "Viral Post",
     level: 1,
-    effect: "Le joueur qui a le moins de prospects en Notoriété en ajoute 3."
+    effect: "The player with the fewest prospects in Awareness adds 3."
   },
   {
-    id: "lancement-concurrent",
-    name: "Lancement concurrent",
+    id: "competitor-launch",
+    name: "Competitor Launch",
     level: 1,
-    effect: "Chaque joueur perd 1 prospect sur chaque étage qui en compte 3 ou plus."
+    effect: "Each player loses 1 prospect on every stage that has 3 or more."
   },
   {
     id: "black-friday",
     name: "Black Friday",
     level: 1,
-    effect: "Essai gratuit, Code promo et Test A/B coûtent 1 pièce de moins cette manche."
+    effect: "Free Trial, Promo Code, and A/B Test cost 1 coin less this round."
   },
   {
-    id: "bug-du-site",
-    name: "Bug du site",
+    id: "website-bug",
+    name: "Website Bug",
     level: 1,
-    effect: "Personne ne peut jouer Essai gratuit, Code promo ou Test A/B cette manche."
+    effect: "No one can play Free Trial, Promo Code, or A/B Test this round."
   },
   {
-    id: "hausse-prix-pubs",
-    name: "Hausse du prix des pubs",
-    level: 2,
-    effect: "Pub Instagram et Partenariat influenceur coûtent 2 pièces de plus."
+    id: "ad-price-hike",
+    name: "Ad Price Hike",
+    level: 2, // Level 2 event only
+    effect: "Instagram Ad and Influencer Partnership cost 2 coins more."
   },
   {
-    id: "controle-rgpd",
-    name: "Contrôle RGPD",
+    id: "gdpr-audit",
+    name: "GDPR Audit",
     level: 2,
-    effect: "Chaque joueur paie 2 pièces à la banque pour se mettre en conformité."
+    effect: "Each player pays 2 coins to the bank for compliance."
   },
   {
-    id: "crise-economique",
-    name: "Crise économique",
+    id: "economic-downturn",
+    name: "Economic Downturn",
     level: 2,
-    effect: "Tous les revenus sont divisés par 2 (arrondi en dessous)."
+    effect: "All revenues are divided by 2 (rounded down)."
   },
   {
-    id: "pic-de-churn",
-    name: "Pic de churn",
+    id: "churn-spike",
+    name: "Churn Spike",
     level: 2,
-    effect: "Le dé du churn fait partir un client sur 1, 2 ou 3."
+    effect: "The churn die makes a customer leave on a roll of 1, 2, or 3."
   }
 ];

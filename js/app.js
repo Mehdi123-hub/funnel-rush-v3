@@ -1,9 +1,13 @@
+// Import game constants and event definitions from data.js
 import { TOTAL_ROUNDS, TOTAL_TOKENS, PLAYER_COLORS, EVENTS } from "./data.js";
 
+// LocalStorage key used to persist active game state across reloads
 const STORAGE_KEY = "funnelRush.v3.game";
 
+// Shorthand helper to get an element by ID
 const $ = (id) => document.getElementById(id);
 
+// Escape special HTML characters to prevent XSS when inserting dynamic text
 function escapeHTML(str) {
   return String(str).replace(/[&<>"']/g, (c) => ({
     "&": "&amp;",
@@ -14,6 +18,7 @@ function escapeHTML(str) {
   }[c]));
 }
 
+// Load saved game object from localStorage, or return null if absent/invalid
 function loadGame() {
   try {
     return JSON.parse(localStorage.getItem(STORAGE_KEY));
@@ -22,36 +27,44 @@ function loadGame() {
   }
 }
 
+// Save the current game object to localStorage
 function saveGame(game) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(game));
 }
 
+// Remove the saved game from localStorage
 function clearGame() {
   localStorage.removeItem(STORAGE_KEY);
 }
 
-let draftLevel = 2;
-let draftCount = 3;
-let draftNames = ["", "", "", ""];
+// Draft setup state before a game is persisted
+let draftLevel = 2; // Selected difficulty level (1 or 2)
+let draftCount = 3; // Selected player count (2, 3, or 4)
+let draftNames = ["", "", "", ""]; // Draft player names
 
+// Show only one screen section at a time and hide the rest
 function showOnly(screenId) {
   ["screen-home", "screen-players", "screen-round", "screen-scores", "screen-results"]
     .forEach((id) => $(id).classList.toggle("hidden", id !== screenId));
 }
 
+// Update a level badge element's text and style class
 function applyLevelBadge(el, level) {
-  el.textContent = `Niveau ${level}`;
+  el.textContent = `Level ${level}`;
   el.classList.toggle("is-level-1", level === 1);
   el.classList.toggle("is-level-2", level === 2);
 }
 
+// Pick a random event allowed by the game level without repeating the previous event
 function pickNextEvent(level, lastEventId) {
   const pool = EVENTS.filter((ev) => ev.level <= level && ev.id !== lastEventId);
   const candidates = pool.length ? pool : EVENTS.filter((ev) => ev.level <= level);
   return candidates[Math.floor(Math.random() * candidates.length)].id;
 }
 
-/* --- ÉCRAN 1 : ACCUEIL --- */
+/* --- 1. HOME SCREEN --- */
+
+// Sync visual selection state on the Level 1 and Level 2 cards
 function syncHomeSelection() {
   document.querySelectorAll(".level-card[data-level]").forEach((btn) => {
     const selected = Number(btn.dataset.level) === draftLevel;
@@ -60,6 +73,7 @@ function syncHomeSelection() {
   });
 }
 
+// Listen for clicks on Level 1 / Level 2 cards
 document.querySelectorAll(".level-card[data-level]").forEach((btn) => {
   btn.addEventListener("click", () => {
     draftLevel = Number(btn.dataset.level);
@@ -67,15 +81,19 @@ document.querySelectorAll(".level-card[data-level]").forEach((btn) => {
   });
 });
 
+// Move to the Players setup screen when clicking "New game"
 $("btn-new-game").addEventListener("click", () => {
   draftCount = 3;
   renderPlayersScreen();
   showOnly("screen-players");
 });
 
-/* --- ÉCRAN 2 : JOUEURS --- */
+/* --- 2. PLAYERS SCREEN --- */
+
+// Render the player count buttons and name input rows
 function renderPlayersScreen() {
   applyLevelBadge($("players-level-badge"), draftLevel);
+
   document.querySelectorAll(".count-btn[data-count]").forEach((btn) => {
     btn.classList.toggle("is-active", Number(btn.dataset.count) === draftCount);
   });
@@ -91,7 +109,7 @@ function renderPlayersScreen() {
           type="text"
           maxlength="24"
           data-player-index="${idx}"
-          placeholder="Prénom"
+          placeholder="First name"
           value="${escapeHTML(val)}"
           autocomplete="off"
         >
@@ -103,6 +121,7 @@ function renderPlayersScreen() {
   $("players-error").textContent = "";
 }
 
+// Preserve typed names and switch active player count (2, 3, or 4)
 document.querySelectorAll(".count-btn[data-count]").forEach((btn) => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".name-input[data-player-index]").forEach((inp) => {
@@ -113,10 +132,11 @@ document.querySelectorAll(".count-btn[data-count]").forEach((btn) => {
   });
 });
 
+// Create and save a new game at Round 1, then render the Round screen
 $("btn-start-game").addEventListener("click", () => {
   const inputs = Array.from(document.querySelectorAll(".name-input[data-player-index]"));
   const players = inputs.map((inp, idx) => ({
-    name: inp.value.trim() || `Joueur ${idx + 1}`,
+    name: inp.value.trim() || `Player ${idx + 1}`,
     color: PLAYER_COLORS[idx] || PLAYER_COLORS[0],
     loyalty: 0,
     conversion: 0,
@@ -137,18 +157,21 @@ $("btn-start-game").addEventListener("click", () => {
   render();
 });
 
-/* --- ÉCRAN 3 : MANCHE --- */
+/* --- 3. ROUND SCREEN --- */
+
+// Compute the label for the single round button based on current state
 function getRoundButtonLabel(game) {
-  if (!game.eventId) return `Manche ${game.round} : tirer l'événement`;
-  if (game.round < TOTAL_ROUNDS) return "Manche suivante : tirer l'événement";
-  return "Fin de partie : calculer les scores";
+  if (!game.eventId) return `Round ${game.round}: draw event`;
+  if (game.round < TOTAL_ROUNDS) return "Next round: draw event";
+  return "End game: calculate scores";
 }
 
+// Render the round counter, progress bars, event card/placeholder, and action button
 function renderRoundScreen(game) {
   applyLevelBadge($("round-level-badge"), game.level);
 
   const isFinalRound = game.round === TOTAL_ROUNDS;
-  $("round-eyebrow").textContent = isFinalRound ? "Dernière manche" : "Manche";
+  $("round-eyebrow").textContent = isFinalRound ? "Final round" : "Round";
   $("round-eyebrow").classList.toggle("is-final", isFinalRound);
   $("round-counter").textContent = `${game.round}/${TOTAL_ROUNDS}`;
 
@@ -164,22 +187,22 @@ function renderRoundScreen(game) {
     $("event-slot").innerHTML = `
       <div class="event-placeholder">
         <div class="q-badge">?</div>
-        <p class="eyebrow" style="margin-bottom:8px;">Événement de la manche</p>
-        <p style="font-weight:800;font-size:1.05rem;margin-bottom:6px;">L'événement de la manche apparaîtra ici.</p>
-        <p style="color:var(--muted);font-size:0.9rem;margin:0;">Tout le monde est prêt ? Tirez le premier événement.</p>
+        <p class="eyebrow" style="margin-bottom:8px;">Round event</p>
+        <p style="font-weight:800;font-size:1.05rem;margin-bottom:6px;">This round's event will appear here.</p>
+        <p style="color:var(--muted);font-size:0.9rem;margin:0;">Everyone ready? Draw the first event.</p>
       </div>
     `;
   } else {
     $("event-slot").innerHTML = `
       <article class="event-card-box">
         <div class="event-card-head">
-          <span>Événement de la manche</span>
+          <span>Round event</span>
           <span class="event-excl">!</span>
         </div>
         <div class="event-card-body">
           <h2 class="event-title">${escapeHTML(currentEvent.name)}</h2>
           <p class="event-effect">${escapeHTML(currentEvent.effect)}</p>
-          <p class="event-footer-tip">Lisez-le à voix haute. Il s'applique à tous les joueurs, pour cette manche seulement.</p>
+          <p class="event-footer-tip">Read it out loud. It applies to all players for this round only.</p>
         </div>
       </article>
     `;
@@ -190,8 +213,10 @@ function renderRoundScreen(game) {
   btn.classList.toggle("is-gold", Boolean(currentEvent) && isFinalRound);
 }
 
+// Store callback for the active confirmation modal
 let pendingRoundAction = null;
 
+// Open the round confirmation modal
 function openRoundModal(title, desc, onConfirm) {
   pendingRoundAction = onConfirm;
   $("modal-round-title").textContent = title;
@@ -199,22 +224,28 @@ function openRoundModal(title, desc, onConfirm) {
   $("modal-round").classList.remove("hidden");
 }
 
+// Close the round confirmation modal
 function closeRoundModal() {
   pendingRoundAction = null;
   $("modal-round").classList.add("hidden");
 }
 
+// Cancel button inside round modal
 $("modal-round-cancel").addEventListener("click", closeRoundModal);
+
+// Confirm button inside round modal
 $("modal-round-confirm").addEventListener("click", () => {
   const fn = pendingRoundAction;
   closeRoundModal();
   if (typeof fn === "function") fn();
 });
 
+// Handle primary round button: draw current round event, advance round, or go to scores
 $("btn-round-action").addEventListener("click", () => {
   const game = loadGame();
   if (!game) return;
 
+  // First click in a round draws the event immediately without confirmation
   if (!game.eventId) {
     game.eventId = pickNextEvent(game.level, game.lastEventId);
     saveGame(game);
@@ -222,11 +253,12 @@ $("btn-round-action").addEventListener("click", () => {
     return;
   }
 
+  // Advance to next round (1..5 -> 2..6) after confirmation
   if (game.round < TOTAL_ROUNDS) {
     const nextRoundNum = game.round + 1;
     openRoundModal(
-      "Tout le monde a joué ?",
-      `Un nouvel événement sera tiré pour la manche ${nextRoundNum}.`,
+      "Everyone played?",
+      `A new event will be drawn for round ${nextRoundNum}.`,
       () => {
         game.round = nextRoundNum;
         game.lastEventId = game.eventId;
@@ -236,9 +268,10 @@ $("btn-round-action").addEventListener("click", () => {
       }
     );
   } else {
+    // After round 6, transition to the final scores screen after confirmation
     openRoundModal(
-      "Tout le monde a joué ?",
-      "La manche 6 est terminée : passons à la saisie des scores.",
+      "Everyone played?",
+      "Round 6 is complete: moving to final score entry.",
       () => {
         game.phase = "scores";
         saveGame(game);
@@ -248,12 +281,14 @@ $("btn-round-action").addEventListener("click", () => {
   }
 });
 
-/* --- ÉCRAN 4 : SCORES --- */
+/* --- 4. FINAL SCORES SCREEN --- */
+
+// Render final score cards for each player (with Mission +5 toggle in Level 2)
 function renderScoresScreen(game) {
   applyLevelBadge($("scores-level-badge"), game.level);
   $("scores-subtitle").textContent = game.level === 2
-    ? "Comptez vos pièces sur le plateau, tapez les nombres, puis cochez les missions réussies."
-    : "Comptez vos pièces sur le plateau et tapez les nombres pour chaque joueur.";
+    ? "Count your tokens on the board, enter the numbers, then check completed missions."
+    : "Count your tokens on the board and enter the numbers for each player.";
 
   $("score-cards").innerHTML = game.players.map((p, idx) => {
     const missionHtml = game.level === 2 ? `
@@ -274,19 +309,19 @@ function renderScoresScreen(game) {
         </div>
         <div class="metrics-grid">
           <div class="metric-box">
-            <label for="fidelisation-${idx}">Fidélisation</label>
-            <input type="number" min="0" max="30" step="1" id="fidelisation-${idx}" value="${p.loyalty || ""}" placeholder="-">
+            <label for="loyalty-${idx}">Loyalty</label>
+            <input type="number" min="0" max="30" step="1" id="loyalty-${idx}" value="${p.loyalty || ""}" placeholder="-">
           </div>
           <div class="metric-box">
             <label for="conversion-${idx}">Conversion</label>
             <input type="number" min="0" max="30" step="1" id="conversion-${idx}" value="${p.conversion || ""}" placeholder="-">
           </div>
           <div class="metric-box is-gold">
-            <label for="coins-${idx}">Pièces restantes</label>
+            <label for="coins-${idx}">Coins left</label>
             <input type="number" min="0" step="1" id="coins-${idx}" value="${p.coins || ""}" placeholder="-">
           </div>
           <div class="metric-box is-dark">
-            <label for="market-${idx}">Jetons au marché</label>
+            <label for="market-${idx}">Market tokens</label>
             <input type="number" min="0" max="30" step="1" id="market-${idx}" value="${p.market || ""}" placeholder="-">
           </div>
         </div>
@@ -295,7 +330,8 @@ function renderScoresScreen(game) {
     `;
   }).join("");
 
-  document.querySelectorAll('[data-mission-label]').forEach((lbl) => {
+  // Toggle active pill styling when Mission +5 checkbox changes
+  document.querySelectorAll("[data-mission-label]").forEach((lbl) => {
     const chk = lbl.querySelector('input[type="checkbox"]');
     chk.addEventListener("change", () => {
       lbl.classList.toggle("is-checked", chk.checked);
@@ -303,12 +339,14 @@ function renderScoresScreen(game) {
   });
 }
 
+// Parse a non-negative integer field (empty input defaults to 0)
 function parseNonNegInt(raw) {
   if (raw === "" || raw === null || raw === undefined) return 0;
   if (!/^\d+$/.test(String(raw).trim())) return NaN;
   return Number(raw);
 }
 
+// Validate inputs, save final player figures, and switch to Results screen
 $("scores-form").addEventListener("submit", (e) => {
   e.preventDefault();
   const game = loadGame();
@@ -322,7 +360,7 @@ $("scores-form").addEventListener("submit", (e) => {
     errEl.classList.add("hidden");
     errEl.textContent = "";
 
-    const loyalty = parseNonNegInt($(`fidelisation-${idx}`).value);
+    const loyalty = parseNonNegInt($(`loyalty-${idx}`).value);
     const conversion = parseNonNegInt($(`conversion-${idx}`).value);
     const coins = parseNonNegInt($(`coins-${idx}`).value);
     const market = parseNonNegInt($(`market-${idx}`).value);
@@ -330,11 +368,11 @@ $("scores-form").addEventListener("submit", (e) => {
 
     let msg = "";
     if ([loyalty, conversion, coins, market].some((n) => Number.isNaN(n) || n < 0)) {
-      msg = "Entrez uniquement des nombres entiers positifs ou nuls.";
+      msg = "Please enter whole numbers greater than or equal to zero.";
     } else if (market > TOTAL_TOKENS) {
-      msg = `Les jetons au marché ne peuvent pas dépasser ${TOTAL_TOKENS}.`;
+      msg = `Market tokens cannot exceed ${TOTAL_TOKENS}.`;
     } else if (loyalty + conversion > TOTAL_TOKENS - market) {
-      msg = `Fidélisation + Conversion (${loyalty + conversion}) dépasse les prospects entrés (${TOTAL_TOKENS - market}).`;
+      msg = `Loyalty + Conversion (${loyalty + conversion}) cannot exceed entered prospects (${TOTAL_TOKENS - market}).`;
     }
 
     if (msg) {
@@ -355,7 +393,9 @@ $("scores-form").addEventListener("submit", (e) => {
   render();
 });
 
-/* --- ÉCRAN 5 : RÉSULTATS --- */
+/* --- 5. RESULTS SCREEN --- */
+
+// Calculate conversion rates, bonuses, mission points, and sorted standings
 function computeStandings(game) {
   const rated = game.players.map((p) => {
     const entered = TOTAL_TOKENS - p.market;
@@ -377,6 +417,7 @@ function computeStandings(game) {
     .sort((a, b) => b.pts - a.pts || b.rate - a.rate);
 }
 
+// Render winner banner and runner-up cards
 function renderResultsScreen(game) {
   applyLevelBadge($("results-level-badge"), game.level);
   const standings = computeStandings(game);
@@ -390,15 +431,15 @@ function renderResultsScreen(game) {
 
   $("winner-banner").innerHTML = `
     <div>
-      <div class="winner-eyebrow">${winners.length > 1 ? "Égalité · Gagnants" : "Gagnant"}</div>
+      <div class="winner-eyebrow">${winners.length > 1 ? "Tie · Winners" : "Winner"}</div>
       <div class="winner-name-row">
         <span class="winner-dot" style="background:${mainWinner.color}"></span>
         <span>${winnerLabel}</span>
       </div>
       <div class="winner-meta">
-        Taux de conversion ${Math.round(mainWinner.rate * 100)} %
-        ${mainWinner.missionPts ? `<br>Mission réussie +${mainWinner.missionPts}` : ""}
-        ${mainWinner.hasBonus ? `<br>Meilleur taux +${mainWinner.bonus}` : ""}
+        Conversion rate ${Math.round(mainWinner.rate * 100)}%
+        ${mainWinner.missionPts ? `<br>Mission completed +${mainWinner.missionPts}` : ""}
+        ${mainWinner.hasBonus ? `<br>Best rate +${mainWinner.bonus}` : ""}
       </div>
     </div>
     <div class="score-coin">
@@ -408,13 +449,13 @@ function renderResultsScreen(game) {
   `;
 
   $("runners-list").innerHTML = standings.slice(1).map((p, idx) => `
-    <article class="runner-card runner-up-card">
+    <article class="runner-up-card">
       <div style="display:flex;align-items:center;gap:12px;">
         <span class="rank-badge" style="background:${p.color}">${idx + 2}</span>
         <div>
           <div class="runner-title">${escapeHTML(p.name)}</div>
           <div class="runner-sub">
-            Fidélisation ${p.loyalty} · Conversion ${p.conversion} · Pièces ${p.coins}
+            Loyalty ${p.loyalty} · Conversion ${p.conversion} · Coins ${p.coins}
             ${p.missionPts ? " · Mission +5" : ""}
             ${p.hasBonus ? " · Bonus +3" : ""}
           </div>
@@ -425,17 +466,25 @@ function renderResultsScreen(game) {
   `).join("");
 }
 
-/* --- MODALE EFFACER LA PARTIE --- */
+/* --- ERASE GAME MODAL --- */
+
+// Show erase confirmation dialog
 function openResetModal() {
   $("modal-reset").classList.remove("hidden");
 }
 
+// Hide erase confirmation dialog
 function closeResetModal() {
   $("modal-reset").classList.add("hidden");
 }
 
+// Open modal from Results "New game" button
 $("btn-results-new-game").addEventListener("click", openResetModal);
+
+// Close modal on Cancel
 $("modal-reset-cancel").addEventListener("click", closeResetModal);
+
+// Clear saved game and return to Home screen on Erase
 $("modal-reset-confirm").addEventListener("click", () => {
   closeResetModal();
   clearGame();
@@ -443,6 +492,7 @@ $("modal-reset-confirm").addEventListener("click", () => {
   render();
 });
 
+// Router: choose which screen to display based on saved game state
 function render() {
   const game = loadGame();
   if (!game) {
@@ -464,4 +514,5 @@ function render() {
   showOnly("screen-round");
 }
 
+// Initial render on page load
 render();

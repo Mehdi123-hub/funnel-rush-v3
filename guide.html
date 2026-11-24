@@ -1,25 +1,48 @@
 <!doctype html>
-<html lang="fr">
+<!-- Declare HTML5 document -->
+<html lang="en">
+<!-- Set document language to English -->
 <head>
+  <!-- UTF-8 encoding -->
   <meta charset="utf-8">
+  <!-- Responsive mobile viewport -->
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Theme color -->
   <meta name="theme-color" content="#f4f2ff">
-  <title>Funnel Rush — Guide des cartes</title>
+  <!-- Page title -->
+  <title>Funnel Rush — Card Guide</title>
+  <!-- Shared stylesheet -->
   <link rel="stylesheet" href="./css/style.css">
+  <!-- Card guide module script -->
   <script type="module" src="./js/guide.js"></script>
 </head>
 <body>
+  <!-- Centered mobile-first container -->
   <main class="app-shell">
+    <!-- Top header linking back to the main app -->
     <header class="top-bar">
       <a href="./index.html" class="brand-mini"><img src="./FunnelRush_Logo.png" alt=""> FUNNEL RUSH</a>
-      <span class="level-badge is-level-2">15 cartes</span>
+      <span class="level-badge is-level-2">15 cards</span>
     </header>
 
-    <h1 class="screen-title">Guide des cartes</h1>
-    <p class="screen-subtitle">Définitions, coûts et effets des cartes Action (niveaux 1 et 2).</p>
+    <!-- List view (matches 10_Guide_liste.png) -->
+    <section id="guide-list-view">
+      <h1 class="screen-title">Card guide</h1>
+      <p class="screen-subtitle">All 15 cards, by stage · L2 = level 2</p>
+      <p class="guide-tap-hint">Tap a card to open it.</p>
+      <!-- Dynamic container for funnel floor groups and card rows -->
+      <div id="guide-groups"></div>
+    </section>
 
-    <div id="guide-filters" class="filter-bar"></div>
-    <div id="guide-list"></div>
+    <!-- Single card detail view (matches 11_Guide_carte.png) -->
+    <section id="guide-detail-view" class="hidden">
+      <!-- Back link to return to full list -->
+      <button id="btn-back-to-list" type="button" class="back-link-btn">&lsaquo; All cards</button>
+      <!-- Dynamic container for selected card details -->
+      <div id="guide-detail-content"></div>
+      <!-- Button cycling to the next card in the deck -->
+      <button id="btn-next-card" type="button" class="cta-btn is-outline">Next card</button>
+    </section>
   </main>
 </body>
 </html>
