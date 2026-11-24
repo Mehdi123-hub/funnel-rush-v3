@@ -82,9 +82,9 @@ button {
   line-height: 1; /* Avoid extra line-height spacing */
 }
 
-/* Logo image size inside inner headers */
+/* Logo image size inside inner headers (larger for clear visibility on sub-screens) */
 .brand-logo-only img {
-  height: 34px; /* Crisp header logo height */
+  height: 48px; /* Prominent header logo height */
   width: auto; /* Keep natural aspect ratio */
   display: block; /* Prevent inline baseline gap */
 }
