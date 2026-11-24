@@ -1240,9 +1240,9 @@ h1, h2, h3, p {
   margin: 0; /* Clean margin */
 }
 
-/* Phone-sized screens: match header logo visual weight roughly to the "LEVEL 2" badge */
+/* Phone-sized screens: double the header logo height to 56px */
 @media (max-width: 480px) {
   .brand-logo-only img {
-    height: 75px; /* Compact phone header logo matching badge height */
+    height: 56px; /* Twice as tall as previous 28px phone logo height */
   }
 }
