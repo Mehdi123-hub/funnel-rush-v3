@@ -82,9 +82,9 @@ button {
   line-height: 1; /* Avoid extra line-height spacing */
 }
 
-/* Logo image size inside inner headers (larger for clear visibility on sub-screens) */
+/* Logo image size inside inner headers */
 .brand-logo-only img {
-  height: 50px; /* Prominent header logo height */
+  height: 34px; /* Default header logo height */
   width: auto; /* Keep natural aspect ratio */
   display: block; /* Prevent inline baseline gap */
 }
@@ -1238,4 +1238,11 @@ h1, h2, h3, p {
   font-size: 0.92rem; /* Slightly softer size */
   color: var(--muted); /* Muted text */
   margin: 0; /* Clean margin */
+}
+
+/* Phone-sized screens: match header logo visual weight roughly to the "LEVEL 2" badge */
+@media (max-width: 480px) {
+  .brand-logo-only img {
+    height: 28px; /* Compact phone header logo matching badge height */
+  }
 }
