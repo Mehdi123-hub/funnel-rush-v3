@@ -1,9 +1,12 @@
-import { PLAYER_COLORS, LEVEL_CONFIG, TOTAL_ROUNDS, FUNNEL_FLOORS, EVENTS, computePlayerScore, rankPlayers } from "./data.js";
+import { PLAYER_COLORS, LEVEL_CONFIG, TOTAL_ROUNDS, PAWNS_PER_PLAYER, FUNNEL_FLOORS, EVENTS, computePlayerScore, rankPlayers } from "./data.js";
 
 // Clé de sauvegarde locale pour conserver la partie en cours
 const KEY = "sbs_game_v1";
 // Raccourci de sélection par ID
 const $ = (id) => document.getElementById(id);
+
+// État initial d'un joueur pour la saisie finale
+const emptyScore = (coins = "") => ({ loyalty: "", conversion: "", coins, market: "", buzz: "0", mission: false });
 
 // État par défaut avec le niveau 1 sélectionné
 const defaultState = () => ({
@@ -13,9 +16,9 @@ const defaultState = () => ({
   playerNames: ["", "", "", ""],
   round: 1,
   eventDrawn: false,
-  drawnEventIds: [],
+  lastEventId: null,
   currentEventId: null,
-  scores: Array.from({ length: 4 }, () => ({ market: "", interest: "", conversion: "", coins: "", mission: false })),
+  scores: Array.from({ length: 4 }, () => emptyScore()),
 });
 
 let state = load();
@@ -34,7 +37,6 @@ function load() {
       playerCount: [2, 3, 4].includes(raw.playerCount) ? raw.playerCount : 3,
       playerNames: [0, 1, 2, 3].map((i) => String(raw.playerNames?.[i] ?? "")),
       round: Math.min(TOTAL_ROUNDS, Math.max(1, Number(raw.round) || 1)),
-      drawnEventIds: Array.isArray(raw.drawnEventIds) ? raw.drawnEventIds : [],
       scores: [0, 1, 2, 3].map((i) => ({ ...base.scores[i], ...(raw.scores?.[i] || {}) })),
     };
   } catch {
@@ -45,7 +47,7 @@ function load() {
 // Sauvegarde l'état courant
 const save = () => localStorage.setItem(KEY, JSON.stringify(state));
 
-// Met à jour le texte du badge de niveau (même apparence encadrée blanche pour L1 et L2)
+// Met à jour le badge de niveau (encadré blanc identique pour L1 et L2)
 const setBadge = (el) => {
   if (el) el.textContent = `LEVEL ${state.level}`;
 };
@@ -109,12 +111,12 @@ function render() {
     }
   }
 
-  // Écran scores finaux
+  // Écran scores finaux (5 chiffres en pions/pièces + mission au niveau 2)
   if (state.screen === "scores") {
     setBadge($("scores-level-badge"));
     $("scores-subtitle").textContent = state.level === 2
-      ? "Count your tokens, enter the numbers, then tick completed missions (+5 pts)."
-      : "Count your tokens and enter the numbers for each player.";
+      ? "Count your pawns and coins, then tick completed missions (+5 pts)."
+      : "Count your pawns and remaining coins for each player.";
     $("score-cards").innerHTML = "";
     for (let i = 0; i < state.playerCount; i++) {
       const sc = state.scores[i];
@@ -126,11 +128,12 @@ function render() {
           <span class="player-row"><span class="dot" style="background:${PLAYER_COLORS[i].hex}"></span><strong>${name}</strong></span>
           ${state.level === 2 ? `<label class="mission-pill ${sc.mission ? "is-on" : ""}"><input type="checkbox" data-f="mission" ${sc.mission ? "checked" : ""}> MISSION +5</label>` : ""}
         </div>
-        <div class="metrics-4">
-          <div class="m-box"><label>MARKET TOKENS</label><input type="number" min="0" data-f="market" value="${sc.market}"></div>
-          <div class="m-box"><label>INTEREST TOKENS</label><input type="number" min="0" data-f="interest" value="${sc.interest}"></div>
-          <div class="m-box"><label>CONVERSION TOKENS</label><input type="number" min="0" data-f="conversion" value="${sc.conversion}"></div>
-          <div class="m-box"><label>REMAINING COINS</label><input type="number" min="0" data-f="coins" value="${sc.coins}"></div>
+        <div class="metrics-5">
+          <div class="m-box"><label>LOYALTY PAWNS (3 pts)</label><input type="number" min="0" max="8" data-f="loyalty" value="${sc.loyalty}"></div>
+          <div class="m-box"><label>CONVERSION PAWNS (2 pts)</label><input type="number" min="0" max="8" data-f="conversion" value="${sc.conversion}"></div>
+          <div class="m-box"><label>MARKET PAWNS (0–6)</label><input type="number" min="0" max="6" data-f="market" value="${sc.market}"></div>
+          <div class="m-box"><label>BUZZ PAWNS (0–2)</label><input type="number" min="0" max="2" data-f="buzz" value="${sc.buzz}"></div>
+          <div class="m-box is-wide"><label>REMAINING COINS (1 pt / 5 coins)</label><input type="number" min="0" data-f="coins" value="${sc.coins}"></div>
         </div>
         <p class="err-msg hidden" data-err></p>`;
       card.querySelectorAll("input").forEach((inp) => {
@@ -184,14 +187,14 @@ document.querySelectorAll(".lvl-card").forEach((c) => c.addEventListener("click"
   render();
 }));
 
-// Retour à l'accueil depuis l'écran Players pour changer de niveau ou revenir en arrière
+// Retour à l'accueil depuis l'écran Players pour changer de niveau
 $("btn-players-home").addEventListener("click", () => go("home"));
 
 // Reprend la partie en cours ou démarre une nouvelle sélection de joueurs
 $("btn-new-game").addEventListener("click", () => {
   if (state.screen !== "home") return render();
   const coins = String(LEVEL_CONFIG[state.level].startingCoins);
-  state.scores = Array.from({ length: 4 }, () => ({ market: "", interest: "", conversion: "", coins, mission: false }));
+  state.scores = Array.from({ length: 4 }, () => emptyScore(coins));
   go("players");
 });
 
@@ -213,19 +216,19 @@ $("btn-start-game").addEventListener("click", () => {
   names.forEach((n, i) => (state.playerNames[i] = n));
   state.round = 1;
   state.eventDrawn = false;
-  state.drawnEventIds = [];
+  state.lastEventId = null;
   state.currentEventId = null;
   go("round");
 });
 
-// Tire un événement ou passe à la manche suivante / aux scores
+// Tire un événement filtré par niveau (sans répéter le précédent) ou change de manche
 $("btn-round-action").addEventListener("click", () => {
   if (!state.eventDrawn) {
-    const pool = EVENTS.filter((e) => !state.drawnEventIds.includes(e.id));
-    const chosen = (pool.length ? pool : EVENTS)[Math.floor(Math.random() * (pool.length || EVENTS.length))];
+    const pool = EVENTS.filter((e) => e.level <= state.level && e.id !== state.lastEventId);
+    const chosen = pool[Math.floor(Math.random() * pool.length)];
+    state.lastEventId = chosen.id;
     state.currentEventId = chosen.id;
     state.eventDrawn = true;
-    if (!state.drawnEventIds.includes(chosen.id)) state.drawnEventIds.push(chosen.id);
     save();
     return render();
   }
@@ -242,17 +245,29 @@ $("btn-round-action").addEventListener("click", () => {
   }
 });
 
-// Vérifie les scores saisis avant d'afficher les résultats
+// Vérifie la validité des pions et pièces saisis avant d'afficher les résultats
 $("scores-form").addEventListener("submit", (e) => {
   e.preventDefault();
   let ok = true;
   for (let i = 0; i < state.playerCount; i++) {
     const sc = state.scores[i];
-    const invalid = [sc.market, sc.interest, sc.conversion, sc.coins].some((v) => v === "" || Number(v) < 0 || Number.isNaN(Number(v)));
+    const vals = [sc.loyalty, sc.conversion, sc.market, sc.buzz, sc.coins];
+    const nums = vals.map(Number);
+    const [loyalty, conversion, market, buzz, coins] = nums;
     const err = $("score-cards").children[i]?.querySelector("[data-err]");
-    if (invalid) {
+
+    // Vérifie entiers positifs, bornes Market (0..6), Buzz (0..2) et total cohérent
+    const badNumber = vals.some((v) => v === "" || Number.isNaN(Number(v)) || Number(v) < 0 || !Number.isInteger(Number(v)));
+    const badRange = market > PAWNS_PER_PLAYER || buzz > 2 || loyalty + conversion > PAWNS_PER_PLAYER + buzz - market || coins < 0;
+
+    if (badNumber || badRange) {
       ok = false;
-      if (err) { err.textContent = "Enter a valid number for each field."; err.classList.remove("hidden"); }
+      if (err) {
+        err.textContent = badRange
+          ? "Check pawn limits: Market ≤ 6, Buzz ≤ 2, Loyalty + Conversion ≤ 6 + Buzz − Market."
+          : "Enter whole non-negative numbers for every field.";
+        err.classList.remove("hidden");
+      }
     }
   }
   if (ok) go("results");

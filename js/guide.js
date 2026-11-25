@@ -4,8 +4,9 @@ import { FLOORS, CARDS } from "./data.js";
 const $ = (id) => document.getElementById(id);
 let currentId = null;
 
-// Affiche la liste des cartes groupées par étape du funnel
+// Affiche la liste des 17 cartes groupées par étape du funnel
 function renderList() {
+  $("guide-count-pill").textContent = `${CARDS.length} CARDS`;
   $("guide-groups").innerHTML = FLOORS.map((f) => {
     const items = CARDS.filter((c) => c.floor === f.id);
     if (!items.length) return "";
@@ -16,7 +17,8 @@ function renderList() {
           <button type="button" class="card-row-btn" style="--accent:${f.color}" data-id="${c.id}">
             <span>${c.name}</span>
             <span class="row-right">
-              ${c.level === 2 ? `<span class="l2-pill">L2</span>` : ""}
+              ${c.special ? `<span class="tag-pill is-special">SPECIAL</span>` : ""}
+              ${c.level === 2 ? `<span class="tag-pill">L2</span>` : ""}
               <span class="coin-circle">${c.cost}</span>
               <span class="chev">&rsaquo;</span>
             </span>
@@ -36,8 +38,12 @@ function openDetail(id) {
   currentId = c.id;
   const f = FLOORS.find((x) => x.id === c.floor) || FLOORS[0];
 
-  // Pilule d'étape placée au-dessus de la carte
-  $("detail-stage-pill").innerHTML = `<span class="stage-chip" style="background:${f.color}">${f.name}</span>`;
+  // Pilules d'étape et badges (L2 / Special) placés au-dessus de la carte
+  $("detail-stage-pill").innerHTML = `
+    <span class="stage-chip" style="background:${f.color}">${f.name}</span>
+    ${c.special ? `<span class="tag-pill is-special">SPECIAL</span>` : ""}
+    ${c.level === 2 ? `<span class="tag-pill">LEVEL 2</span>` : ""}
+  `;
 
   // Carte blanche avec bandeau supérieur coloré et pièce de coût
   $("guide-detail-content").innerHTML = `
