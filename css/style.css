@@ -1,3 +1,4 @@
+/* Variables de couleurs issues de la charte Slowly But Surely */
 :root {
   --ink: #1B1040;
   --wall: #2B1E62;
@@ -17,350 +18,625 @@ body {
   min-height: 100dvh;
 }
 
-button, input {
-  font: inherit;
-  color: inherit;
-}
-
-button {
-  cursor: pointer;
-  border: 0;
-  background: none;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; border: 0; background: none; }
+a { color: inherit; text-decoration: none; }
 .hidden { display: none !important; }
 
+/* Conteneur principal occupant toute la hauteur d'écran */
 .shell {
   max-width: 460px;
+  min-height: 100dvh;
   margin: 0 auto;
-  padding: 20px 18px 36px;
+  padding: 24px 18px 28px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
 }
 
+/* Chaque écran s'étire sur toute la hauteur disponible */
 .screen {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.bar {
+.top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
 }
 
-.bar-right {
+.logo-svg { height: 26px; width: auto; display: block; }
+.logo-hero { height: 46px; margin: 0 auto; }
+
+.lvl-pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 2px solid var(--violet);
+  font-family: "Permanent Marker", cursive;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.lvl-pill.is-blue {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--white);
+}
+
+.guide-pills {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 6px;
 }
 
-.mini-brand {
-  font-family: "Fredoka", sans-serif;
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--pink);
+/* Accueil aéré sur tout l'écran */
+.home-hero {
+  text-align: center;
+  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.brand-lockup {
-  text-align: center;
-  padding: 18px 0 6px;
-  font-family: "Fredoka", sans-serif;
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.logo-slowly { color: var(--blue); }
-.logo-but { color: var(--white); margin: 0 8px; font-family: "Permanent Marker", cursive; font-size: 1.4rem; }
-.logo-surely { color: var(--pink); font-family: "Sedgwick Ave Display", cursive; font-size: 2.7rem; }
-
-.tagline {
-  text-align: center;
+.hero-lead {
   margin: 0;
   font-family: "Permanent Marker", cursive;
-  font-size: 1.1rem;
+  font-size: 1.45rem;
+  line-height: 1.3;
 }
 
-.meta-line, .mono, .note {
+.hero-sub, .hint-line, .page-sub {
   margin: 0;
-  text-align: center;
-  font-family: "DM Mono", monospace;
-  font-size: 0.78rem;
+  font-size: 0.92rem;
   opacity: 0.85;
 }
 
-.level-row, .seg, .modal-row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+.section-label {
+  display: block;
+  font-family: "Permanent Marker", cursive;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
 }
 
-.seg { grid-template-columns: repeat(3, 1fr); }
+/* Cartes de niveau : Level 1 en bleu quand actif, Level 2 en rose */
+.level-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
 
-.lvl-btn, .seg-btn {
-  padding: 12px;
-  border-radius: 14px;
+.lvl-card {
   background: var(--wall);
   border: 2px solid var(--violet);
+  border-radius: 20px;
+  padding: 16px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lvl-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lvl-num {
   font-family: "Permanent Marker", cursive;
-  font-size: 0.9rem;
+  font-size: 2rem;
+  line-height: 1;
 }
 
-.lvl-btn.is-on {
-  background: var(--violet);
-  border-color: var(--pink);
+.radio-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--white);
 }
 
-.seg-btn.is-on {
-  background: var(--pink);
+.lvl-name {
+  font-family: "Permanent Marker", cursive;
+  font-size: 1.15rem;
+}
+
+.lvl-desc { font-size: 0.82rem; opacity: 0.85; }
+
+/* Sélection Level 1 en bleu */
+.lvl-card.is-sel-1 {
+  background: var(--white);
+  border-color: var(--blue);
   color: var(--ink);
 }
+.lvl-card.is-sel-1 .lvl-num { color: var(--blue); }
+.lvl-card.is-sel-1 .radio-dot { background: var(--blue); border-color: var(--ink); }
 
-.btn-pink, .btn-ghost {
+/* Sélection Level 2 en rose */
+.lvl-card.is-sel-2 {
+  background: var(--white);
+  border-color: var(--pink);
+  color: var(--ink);
+}
+.lvl-card.is-sel-2 .lvl-num { color: var(--pink); }
+.lvl-card.is-sel-2 .radio-dot { background: var(--pink); border-color: var(--ink); }
+
+/* Boutons principaux et secondaires */
+.cta-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.btn-main, .btn-outline {
   width: 100%;
-  padding: 13px 16px;
-  border-radius: 14px;
+  padding: 16px 18px;
+  border-radius: 999px;
   text-align: center;
   font-family: "Permanent Marker", cursive;
-  font-size: 1rem;
-  display: inline-block;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  display: block;
 }
 
-.btn-pink {
+.btn-main {
   background: var(--pink);
   color: var(--ink);
 }
 
-.btn-ghost {
-  background: var(--wall);
-  border: 2px solid var(--violet);
+.btn-outline {
+  border: 2px solid var(--white);
   color: var(--white);
 }
 
-.pill {
-  padding: 5px 11px;
-  border-radius: 999px;
-  background: var(--violet);
-  font-family: "DM Mono", monospace;
-  font-size: 0.72rem;
-  white-space: nowrap;
-}
-
-.pill-blue {
-  background: var(--blue);
-  color: var(--ink);
-  font-weight: 500;
-}
-
-.title, .title-sm {
+.page-title {
   margin: 0;
   font-family: "Permanent Marker", cursive;
-  font-size: 1.8rem;
-  color: var(--pink);
+  font-size: 2.1rem;
 }
 
-.title-sm { font-size: 1.3rem; }
+.page-head { display: flex; flex-direction: column; gap: 4px; }
+.stack { display: flex; flex-direction: column; gap: 12px; }
 
-.stack {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+/* Sélection nombre de joueurs et champs */
+.count-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.count-btn {
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--wall);
+  font-family: "Permanent Marker", cursive;
+  font-size: 1.5rem;
+}
+
+.count-btn.is-active {
+  background: var(--white);
+  color: var(--ink);
 }
 
 .player-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: var(--wall);
-  padding: 10px 12px;
-  border-radius: 14px;
+  gap: 12px;
 }
 
 .dot {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
+  border: 2px solid var(--ink);
   flex-shrink: 0;
 }
 
-.inp {
+.name-inp {
   width: 100%;
-  background: var(--ink);
-  border: 1px solid var(--violet);
-  border-radius: 10px;
-  padding: 8px 10px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--white);
+  color: var(--ink);
+  border: 0;
 }
 
-.err {
+.err-msg {
   margin: 0;
   color: var(--pink);
   font-family: "DM Mono", monospace;
   font-size: 0.8rem;
 }
 
-.round-top {
-  text-align: center;
-  background: var(--wall);
-  padding: 16px;
-  border-radius: 16px;
-}
+/* Écran de manche et carte événement */
+.round-box { text-align: center; }
 
-.round-num {
-  font-family: "Permanent Marker", cursive;
-  font-size: 3rem;
-  line-height: 1.1;
+.round-label {
+  font-family: "DM Mono", monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
   color: var(--pink);
 }
 
-.bars {
+.round-big {
+  font-family: "Permanent Marker", cursive;
+  font-size: 4.5rem;
+  line-height: 1;
+  margin: 6px 0 14px;
+}
+
+.round-bars {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 6px;
-  margin-top: 10px;
+  gap: 8px;
 }
 
-.bar-seg {
+.r-bar {
   height: 6px;
-  border-radius: 99px;
-  background: var(--ink);
-}
-
-.bar-seg.is-on { background: var(--pink); }
-
-.event-box, .card, .winner-box, .runner-box, .detail-box {
+  border-radius: 999px;
   background: var(--wall);
-  border: 2px solid var(--violet);
-  border-radius: 16px;
-  padding: 14px;
 }
 
-.event-title, .card-name {
-  margin: 6px 0;
+.r-bar.is-on { background: var(--pink); }
+
+.event-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.event-wait {
+  background: var(--wall);
+  border-radius: 24px;
+  padding: 36px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.q-circle {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 2px solid var(--white);
+  display: grid;
+  place-items: center;
   font-family: "Permanent Marker", cursive;
-  font-size: 1.35rem;
+  font-size: 1.6rem;
 }
 
-.body-copy { margin: 0; font-size: 0.98rem; }
+.event-card {
+  background: var(--white);
+  color: var(--ink);
+  border-radius: 24px;
+  overflow: hidden;
+}
 
-.grid-2 {
+.event-head {
+  background: var(--pink);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 700;
+}
+
+.excl-badge {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  font-family: "Permanent Marker", cursive;
+}
+
+.event-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.event-name {
+  margin: 0;
+  font-family: "Permanent Marker", cursive;
+  font-size: 1.7rem;
+}
+
+.event-tip {
+  margin: 0;
+  padding-top: 10px;
+  border-top: 1px solid #E5E7EB;
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+/* Scores et résultats */
+.score-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.score-card {
+  background: var(--white);
+  color: var(--ink);
+  border-radius: 22px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.score-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mission-pill {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
+  font-family: "Permanent Marker", cursive;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mission-pill.is-on {
+  background: var(--pink);
+}
+
+.metrics-4 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 10px;
+  gap: 10px;
 }
 
-.field {
-  background: var(--ink);
-  padding: 8px 10px;
-  border-radius: 10px;
+.m-box {
+  background: #F4F5FB;
+  border-radius: 14px;
+  padding: 10px 12px;
+  border-left: 4px solid var(--violet);
 }
 
-.field label {
+.m-box label {
   display: block;
   font-family: "DM Mono", monospace;
   font-size: 0.68rem;
-  opacity: 0.8;
-  margin-bottom: 4px;
+  font-weight: 500;
 }
 
-.field input[type="number"] {
+.m-box input {
   width: 100%;
-  background: transparent;
   border: 0;
+  background: transparent;
   font-family: "Permanent Marker", cursive;
-  font-size: 1.2rem;
+  font-size: 1.35rem;
+  color: var(--ink);
+  margin-top: 4px;
 }
 
-.winner-box {
-  border-color: var(--pink);
+.winner-card {
+  background: var(--pink);
+  color: var(--ink);
+  border-radius: 24px;
+  padding: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
 
-.pts-badge {
+.winner-name {
   font-family: "Permanent Marker", cursive;
-  font-size: 1.6rem;
-  color: var(--pink);
-  white-space: nowrap;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0;
 }
 
-.runner-box {
+.pts-ring {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 4px solid var(--ink);
+  display: grid;
+  place-items: center;
+  font-family: "Permanent Marker", cursive;
+  font-size: 1.7rem;
+  flex-shrink: 0;
+}
+
+.runner-card {
+  background: var(--white);
+  color: var(--ink);
+  border-radius: 18px;
+  padding: 14px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
 }
 
-.stage-tag {
+.rank-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  display: grid;
+  place-items: center;
+  font-family: "Permanent Marker", cursive;
+}
+
+.bonus-note {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+
+.bonus-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--pink);
+  flex-shrink: 0;
+}
+
+/* Guide des cartes : espacement aéré en vue détail */
+.stage-chip {
   display: inline-block;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 999px;
   color: var(--ink);
-  font-family: "DM Mono", monospace;
-  font-size: 0.72rem;
-  font-weight: 500;
+  font-family: "Permanent Marker", cursive;
+  font-size: 0.85rem;
 }
 
-.card-btn {
+.card-row-btn {
   width: 100%;
+  background: var(--wall);
+  border-left: 6px solid var(--accent, var(--pink));
+  border-radius: 14px;
+  padding: 14px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  background: var(--wall);
-  border-left: 6px solid var(--stage, var(--pink));
-  border-radius: 12px;
-  padding: 12px 14px;
-  text-align: left;
   font-family: "Permanent Marker", cursive;
   font-size: 1rem;
+  text-align: left;
 }
 
-.card-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: "DM Mono", monospace;
-  font-size: 0.78rem;
-}
-
-.coin-pill {
-  padding: 3px 8px;
-  border-radius: 999px;
+.cost-badge {
   background: var(--pink);
   color: var(--ink);
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-family: "DM Mono", monospace;
+  font-size: 0.78rem;
   font-weight: 500;
 }
 
+.detail-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px 0;
+}
+
+.detail-card {
+  background: var(--white);
+  color: var(--ink);
+  border-radius: 24px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-title {
+  margin: 0;
+  font-family: "Permanent Marker", cursive;
+  font-size: 1.85rem;
+}
+
+.detail-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 12px;
+  border-top: 1px solid #E5E7EB;
+}
+
+.detail-label {
+  font-family: "DM Mono", monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+/* Modales */
 .modal {
   position: fixed;
   inset: 0;
   background: rgba(27, 16, 64, 0.82);
   display: grid;
   place-items: center;
-  padding: 18px;
+  padding: 20px;
 }
 
-.modal-box {
+.modal-card {
   width: 100%;
   max-width: 360px;
-  background: var(--wall);
-  border: 2px solid var(--pink);
-  border-radius: 18px;
-  padding: 18px;
+  background: var(--white);
+  color: var(--ink);
+  border-radius: 26px;
+  padding: 26px 20px;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  gap: 14px;
+}
+
+.modal-badge {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--pink);
+  border: 2px solid var(--ink);
+  display: grid;
+  place-items: center;
+  font-family: "Permanent Marker", cursive;
+  font-size: 1.5rem;
+}
+
+.modal-title { margin: 0; font-family: "Permanent Marker", cursive; font-size: 1.6rem; }
+.modal-desc { margin: 0; font-size: 0.95rem; opacity: 0.8; }
+
+.modal-actions {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.btn-modal-cancel, .btn-modal-pink {
+  padding: 13px;
+  border-radius: 999px;
+  font-family: "Permanent Marker", cursive;
+  font-size: 0.95rem;
+}
+
+.btn-modal-cancel {
+  background: var(--white);
+  border: 2px solid var(--ink);
+  color: var(--ink);
+}
+
+.btn-modal-pink {
+  background: var(--pink);
+  border: 2px solid var(--ink);
+  color: var(--ink);
 }

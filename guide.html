@@ -6,29 +6,32 @@
   <title>Slowly But Surely — Cards</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fredoka:wght@600;700&family=Kalam:wght@400;700&family=Permanent+Marker&family=Sedgwick+Ave+Display&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fredoka:wght@600;700&family=Kalam:wght@400;700&family=Permanent+Marker&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/style.css">
   <script type="module" src="./js/guide.js"></script>
 </head>
 <body>
   <main class="shell">
-    <header class="bar">
-      <a href="./index.html" class="mini-brand">slowly but surely</a>
-      <div class="bar-right">
-        <a href="./index.html" class="pill pill-blue">Back to game</a>
-        <span class="pill">15 CARDS</span>
+    <!-- Barre haute avec logo SVG à gauche et retour vers la partie en cours -->
+    <header class="top-bar">
+      <a href="./index.html"><img src="./assets/logo.svg" alt="slowly but surely" class="logo-svg"></a>
+      <div class="guide-pills">
+        <a href="./index.html" class="lvl-pill is-blue">BACK TO GAME</a>
+        <span class="lvl-pill">15 CARDS</span>
       </div>
     </header>
 
-    <section id="guide-list-view">
-      <h1 class="title">Cards</h1>
+    <!-- Vue liste des cartes groupées par étape du funnel -->
+    <section id="guide-list-view" class="screen">
+      <h1 class="page-title">Cards</h1>
       <div id="guide-groups" class="stack"></div>
     </section>
 
-    <section id="guide-detail-view" class="hidden">
-      <button id="btn-back-to-list" type="button" class="btn-ghost">All cards</button>
-      <div id="guide-detail-content"></div>
-      <button id="btn-next-card" type="button" class="btn-pink">Next card</button>
+    <!-- Vue détail d'une carte plein écran espacé -->
+    <section id="guide-detail-view" class="screen hidden">
+      <button id="btn-back-to-list" type="button" class="btn-outline">ALL CARDS</button>
+      <div id="guide-detail-content" class="detail-wrap"></div>
+      <button id="btn-next-card" type="button" class="btn-main">NEXT CARD</button>
     </section>
   </main>
 </body>

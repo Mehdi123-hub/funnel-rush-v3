@@ -1,10 +1,13 @@
+// Nombre total de manches par partie
 export const TOTAL_ROUNDS = 6;
 
+// Pièces de départ selon le niveau
 export const LEVEL_CONFIG = {
   1: { startingCoins: 20 },
   2: { startingCoins: 15 },
 };
 
+// Couleurs des pions joueurs
 export const PLAYER_COLORS = [
   { name: "Teal", hex: "#00B386" },
   { name: "Pink", hex: "#FF5FC8" },
@@ -12,18 +15,21 @@ export const PLAYER_COLORS = [
   { name: "Blue", hex: "#2F7BFF" },
 ];
 
+// Étapes du funnel (du froid vers le chaud)
 export const FLOORS = [
-  { id: "awareness", name: "1 Awareness", color: "#A3ACD6" },
-  { id: "interest", name: "2 Interest", color: "#739BFF" },
-  { id: "consideration", name: "3 Consideration", color: "#8673FF" },
-  { id: "conversion", name: "4 Conversion", color: "#D25FFF" },
-  { id: "loyalty", name: "5 Loyalty", color: "#FF73D2" },
+  { id: "awareness", name: "Awareness", color: "#A3ACD6" },
+  { id: "interest", name: "Interest", color: "#739BFF" },
+  { id: "consideration", name: "Consideration", color: "#8673FF" },
+  { id: "conversion", name: "Conversion", color: "#D25FFF" },
+  { id: "loyalty", name: "Loyalty", color: "#FF73D2" },
 ];
 
+// Accès rapide aux étapes par identifiant
 export const FUNNEL_FLOORS = Object.fromEntries(
   FLOORS.map((f) => [f.id, { label: f.name, color: f.color }])
 );
 
+// Catalogue des 15 cartes d'action
 export const CARDS = [
   { id: "instagram-ad", name: "Instagram Ad", floor: "awareness", cost: 3, level: 1, effect: "Move 4 prospects from Market to Awareness.", definition: "Paid social ads targeting specific audiences.", example: "Sponsoring a Story for fitness fans." },
   { id: "seo-article", name: "SEO Article", floor: "awareness", cost: 1, level: 1, effect: "Move 2 prospects from Market to Awareness.", definition: "Search-optimized article building organic traffic.", example: "Publishing a student budget guide." },
@@ -37,11 +43,12 @@ export const CARDS = [
   { id: "promo-code", name: "Promo Code", floor: "conversion", cost: 2, level: 1, effect: "Move 2 prospects to Conversion. Revenue halved this round.", definition: "Discount driving immediate purchase.", example: "20% off first order." },
   { id: "ab-test", name: "A/B Test", floor: "conversion", cost: 3, level: 2, effect: "Move 2 to Conversion. Succeeds on die roll 2 or 3.", definition: "Comparing two variants to keep the best.", example: "Testing two checkout buttons." },
   { id: "loyalty-program", name: "Loyalty Program", floor: "loyalty", cost: 3, level: 1, effect: "Move 2 customers from Conversion to Loyalty.", definition: "Rewards for repeat customers.", example: "Points earned on every order." },
-  { id: "referral-program", name: "Referral Program", floor: 1, cost: 3, level: 1, effect: "Move 1 to Loyalty and add 2 to Awareness.", definition: "Customers inviting friends for a reward.", example: "Bonus credit for referrer and friend." },
+  { id: "referral-program", name: "Referral Program", floor: "loyalty", cost: 3, level: 1, effect: "Move 1 to Loyalty and add 2 to Awareness.", definition: "Customers inviting friends for a reward.", example: "Bonus credit for referrer and friend." },
   { id: "customer-support", name: "Customer Support", floor: "loyalty", cost: 2, level: 2, effect: "Move 1 to Loyalty. No churn roll for you this round.", definition: "Post-purchase help retaining buyers.", example: "Fast onboarding and support." },
   { id: "retargeting", name: "Retargeting", floor: "consideration", cost: 3, level: 1, effect: "Bring 2 from Lost back to Consideration.", definition: "Ads re-engaging past visitors.", example: "Cart reminder ads." },
 ];
 
+// Événements tirés au sort à chaque manche
 export const EVENTS = [
   { id: "google-algorithm-update", title: "Google Algorithm Update", floor: "awareness", level: 1, effect: "SEO Article adds only 1 prospect this round." },
   { id: "bad-review", title: "Bad Review", floor: "consideration", level: 1, effect: "Each player loses 2 in Consideration unless protected by Customer Reviews." },
@@ -55,6 +62,7 @@ export const EVENTS = [
   { id: "churn-spike", title: "Churn Spike", floor: "loyalty", level: 2, effect: "Churn die removes customer on 1, 2, or 3." },
 ];
 
+// Calcule le score de base et le taux de conversion d'un joueur
 export function computePlayerScore(sc, level = 2) {
   const interest = Math.max(0, Number(sc?.interest) || 0);
   const conversion = Math.max(0, Number(sc?.conversion) || 0);
@@ -70,6 +78,7 @@ export function computePlayerScore(sc, level = 2) {
   };
 }
 
+// Ajoute le bonus +3 au meilleur taux de conversion et trie le classement
 export function rankPlayers(players) {
   const maxRate = Math.max(0, ...players.map((p) => p.conversionRate || 0));
   return players
