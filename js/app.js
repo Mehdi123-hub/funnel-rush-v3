@@ -45,11 +45,9 @@ function load() {
 // Sauvegarde l'état courant
 const save = () => localStorage.setItem(KEY, JSON.stringify(state));
 
-// Met à jour le badge de niveau dans l'en-tête
+// Met à jour le texte du badge de niveau (même apparence encadrée blanche pour L1 et L2)
 const setBadge = (el) => {
-  if (!el) return;
-  el.textContent = `LEVEL ${state.level}`;
-  el.classList.toggle("is-blue", state.level === 1);
+  if (el) el.textContent = `LEVEL ${state.level}`;
 };
 
 // Change d'écran et sauvegarde la progression
@@ -185,6 +183,9 @@ document.querySelectorAll(".lvl-card").forEach((c) => c.addEventListener("click"
   save();
   render();
 }));
+
+// Retour à l'accueil depuis l'écran Players pour changer de niveau ou revenir en arrière
+$("btn-players-home").addEventListener("click", () => go("home"));
 
 // Reprend la partie en cours ou démarre une nouvelle sélection de joueurs
 $("btn-new-game").addEventListener("click", () => {

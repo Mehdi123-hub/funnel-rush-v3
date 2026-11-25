@@ -50,23 +50,21 @@ a { color: inherit; text-decoration: none; }
   gap: 12px;
 }
 
+.logo-btn { padding: 0; display: inline-flex; align-items: center; }
 .logo-svg { height: 24px; width: auto; display: block; }
 .logo-hero { height: 46px; margin: 0 auto; }
 
-/* Pilules d'en-tête */
+/* Pilules d'en-tête identiques pour LEVEL 1 et LEVEL 2 */
 .lvl-pill, .pill-outline {
   padding: 6px 16px;
   border-radius: 999px;
   border: 2px solid var(--white);
+  background: transparent;
+  color: var(--white);
   font-family: "Permanent Marker", cursive;
   font-size: 0.78rem;
   letter-spacing: 0.04em;
   white-space: nowrap;
-}
-
-.lvl-pill.is-blue {
-  background: var(--blue);
-  border-color: var(--blue);
 }
 
 .pill-white {
@@ -508,7 +506,7 @@ a { color: inherit; text-decoration: none; }
   flex-shrink: 0;
 }
 
-/* Guide des cartes (fidèle aux maquettes 11 et 12) */
+/* Guide des cartes */
 .guide-list-screen {
   display: flex;
   flex-direction: column;
@@ -526,7 +524,6 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 0.03em;
 }
 
-/* Ligne blanche avec bande verticale colorée à gauche */
 .card-row-btn {
   width: 100%;
   background: var(--white);
@@ -551,11 +548,7 @@ a { color: inherit; text-decoration: none; }
   background: var(--accent, var(--pink));
 }
 
-.row-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+.row-right { display: flex; align-items: center; gap: 10px; }
 
 .l2-pill {
   background: var(--ink);
@@ -566,7 +559,6 @@ a { color: inherit; text-decoration: none; }
   font-size: 0.72rem;
 }
 
-/* Pièce de coût blanche cerclée de rose */
 .coin-circle {
   width: 30px;
   height: 30px;
@@ -592,12 +584,7 @@ a { color: inherit; text-decoration: none; }
 
 .chev { opacity: 0.45; font-size: 1.2rem; }
 
-/* Vue détail d'une carte */
-.detail-top {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
+.detail-top { display: flex; flex-direction: column; gap: 14px; }
 
 .back-link {
   align-self: flex-start;
@@ -622,11 +609,7 @@ a { color: inherit; text-decoration: none; }
   flex-direction: column;
 }
 
-/* Bandeau supérieur coloré selon l'étape */
-.detail-stripe {
-  height: 16px;
-  background: var(--accent, var(--pink));
-}
+.detail-stripe { height: 16px; background: var(--accent, var(--pink)); }
 
 .detail-body {
   padding: 24px 22px 28px;
@@ -657,20 +640,9 @@ a { color: inherit; text-decoration: none; }
   border-top: 1.5px solid #E5E7EB;
 }
 
-.detail-label {
-  font-weight: 700;
-  font-size: 0.95rem;
-}
-
-.detail-text {
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.4;
-}
-
-.detail-text.is-muted {
-  opacity: 0.72;
-}
+.detail-label { font-weight: 700; font-size: 0.95rem; }
+.detail-text { margin: 0; font-size: 1rem; line-height: 1.4; }
+.detail-text.is-muted { opacity: 0.72; }
 
 /* Modales */
 .modal {
