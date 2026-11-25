@@ -13,20 +13,20 @@
 </head>
 <body>
   <main class="shell">
-    <!-- Barre haute : logo SVG à gauche, pilules BACK TO GAME et 15 CARDS à droite -->
+    <!-- Barre haute : logo SVG à gauche, pilules BACK TO GAME et 17 CARDS à droite -->
     <header class="top-bar">
       <a href="./index.html"><img src="./assets/logo.svg" alt="slowly but surely" class="logo-svg"></a>
       <div class="guide-pills">
         <a href="./index.html" class="pill-outline">BACK TO GAME</a>
-        <span class="pill-white">15 CARDS</span>
+        <span id="guide-count-pill" class="pill-white">17 CARDS</span>
       </div>
     </header>
 
-    <!-- Vue 1 : liste complète des 15 cartes par étape -->
+    <!-- Vue 1 : liste complète des 17 cartes par étape -->
     <section id="guide-list-view" class="guide-list-screen">
       <div class="page-head">
         <h1 class="page-title">Card guide</h1>
-        <p class="page-sub">All 15 cards, by stage · L2 = level 2</p>
+        <p class="page-sub">All 17 cards, by stage · L2 = level 2</p>
         <p class="tap-hint">Tap a card to open it.</p>
       </div>
       <div id="guide-groups" class="stack-lg"></div>
@@ -36,7 +36,7 @@
     <section id="guide-detail-view" class="screen hidden">
       <div class="detail-top">
         <button id="btn-back-to-list" type="button" class="back-link">&lsaquo;&nbsp;&nbsp;All cards</button>
-        <div id="detail-stage-pill"></div>
+        <div id="detail-stage-pill" class="row-right"></div>
       </div>
 
       <div id="guide-detail-content" class="detail-wrap"></div>
