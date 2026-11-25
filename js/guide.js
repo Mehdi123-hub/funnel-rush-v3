@@ -1,144 +1,50 @@
-// Import funnel stages and card definitions from data.js
 import { FLOORS, CARDS } from "./data.js";
 
-// Shorthand helper to get an element by ID
 const $ = (id) => document.getElementById(id);
+let currentId = null;
 
-// Escape HTML characters for safe dynamic rendering
-function escapeHTML(str) {
-  return String(str).replace(/[&<>"']/g, (c) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  }[c]));
-}
-
-// Map floor IDs to their metadata objects for quick lookup
-const floorById = Object.fromEntries(FLOORS.map((f) => [f.id, f]));
-
-// Currently selected card ID when viewing single-card detail (null = list view)
-let selectedCardId = null;
-
-// Render all 15 cards grouped by funnel stage (10_Guide_liste.png layout)
-function renderListView() {
-  $("guide-groups").innerHTML = FLOORS.map((floor) => {
-    const floorCards = CARDS.filter((c) => c.floor === floor.id);
-    if (!floorCards.length) return "";
-
-    const rowsHtml = floorCards.map((card) => `
-      <button
-        type="button"
-        class="card-row-btn"
-        style="--row-floor-color:${floor.color}"
-        data-open-card="${escapeHTML(card.id)}"
-      >
-        <span class="card-row-title">${escapeHTML(card.name)}</span>
-        <span class="card-row-meta">
-          ${card.level === 2 ? `<span class="l2-mini-pill">L2</span>` : ""}
-          <span class="coin-cost-circle">${card.cost}</span>
-          <span class="row-chevron" aria-hidden="true">&rsaquo;</span>
-        </span>
-      </button>
-    `).join("");
-
+function renderList() {
+  $("guide-groups").innerHTML = FLOORS.map((f) => {
+    const items = CARDS.filter((c) => c.floor === f.id);
+    if (!items.length) return "";
     return `
-      <section class="floor-group" aria-label="${escapeHTML(floor.name)}">
-        <div class="floor-header-pill" style="background:${floor.color}">${escapeHTML(floor.name)}</div>
-        <div class="floor-cards-stack">${rowsHtml}</div>
-      </section>
-    `;
+      <div class="stack">
+        <span class="stage-tag" style="background:${f.color}">${f.name}</span>
+        ${items.map((c) => `
+          <button type="button" class="card-btn" style="--stage:${f.color}" data-id="${c.id}">
+            <span>${c.name}</span>
+            <span class="card-meta">${c.level === 2 ? "<span>L2</span>" : ""}<span class="coin-pill">${c.cost}</span><span>&rsaquo;</span></span>
+          </button>`).join("")}
+      </div>`;
   }).join("");
 
-  // Attach click handlers to open individual card detail
-  document.querySelectorAll("[data-open-card]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      openCardDetail(btn.dataset.openCard);
-    });
-  });
+  document.querySelectorAll("[data-id]").forEach((btn) => btn.addEventListener("click", () => openDetail(btn.dataset.id)));
 }
 
-// Render the detailed card view for a specific card ID (11_Guide_carte.png layout)
-function renderDetailView(cardId) {
-  const card = CARDS.find((c) => c.id === cardId) || CARDS[0];
-  selectedCardId = card.id;
-  const floor = floorById[card.floor] || { name: card.floor, color: "#CDEFF3" };
-
-  // Update URL hash so direct card links work cleanly
-  if (location.hash !== `#${card.id}`) {
-    history.replaceState(null, "", `#${card.id}`);
-  }
-
+function openDetail(id) {
+  const c = CARDS.find((x) => x.id === id) || CARDS[0];
+  currentId = c.id;
+  const f = FLOORS.find((x) => x.id === c.floor) || FLOORS[0];
   $("guide-detail-content").innerHTML = `
-    <div class="floor-header-pill" style="background:${floor.color}">${escapeHTML(floor.name)}</div>
-    <article class="detail-card" style="--detail-floor-color:${floor.color}">
-      <div class="detail-card-head">
-        <h1 class="detail-card-title">${escapeHTML(card.name)}</h1>
-        <div class="detail-coin" aria-label="Cost ${card.cost}">${card.cost}</div>
-      </div>
-
-      <div class="detail-section">
-        <div class="detail-label">Effect</div>
-        <p class="detail-effect">${escapeHTML(card.effect)}</p>
-      </div>
-
-      <div class="detail-section">
-        <div class="detail-label">What is it?</div>
-        <p class="detail-definition">${escapeHTML(card.definition)}</p>
-      </div>
-
-      <div class="detail-section">
-        <div class="detail-label">Example</div>
-        <p class="detail-example">${escapeHTML(card.example)}</p>
-      </div>
-    </article>
-  `;
-}
-
-// Switch from list view to single-card detail view
-function openCardDetail(cardId) {
-  renderDetailView(cardId);
+    <div class="detail-box" style="border-color:${f.color}">
+      <div class="bar"><span class="stage-tag" style="background:${f.color}">${f.name}</span><span class="coin-pill">${c.cost} coins</span></div>
+      <h1 class="card-name">${c.name}</h1>
+      <p class="body-copy"><strong>Effect:</strong> ${c.effect}</p>
+      <p class="body-copy" style="margin-top:8px"><strong>What is it?</strong> ${c.definition}</p>
+      <p class="mono" style="text-align:left;margin-top:8px">Example: ${c.example}</p>
+    </div>`;
   $("guide-list-view").classList.add("hidden");
   $("guide-detail-view").classList.remove("hidden");
-  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// Switch back from detail view to full grouped card list
-function openCardList() {
-  selectedCardId = null;
-  if (location.hash) {
-    history.replaceState(null, "", location.pathname + location.search);
-  }
+$("btn-back-to-list").addEventListener("click", () => {
   $("guide-detail-view").classList.add("hidden");
   $("guide-list-view").classList.remove("hidden");
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
+});
 
-// Back button ("< All cards")
-$("btn-back-to-list").addEventListener("click", openCardList);
-
-// Next card button ("Next card") cycles through all 15 cards
 $("btn-next-card").addEventListener("click", () => {
-  const currentIndex = CARDS.findIndex((c) => c.id === selectedCardId);
-  const nextIndex = currentIndex >= 0 ? (currentIndex + 1) % CARDS.length : 0;
-  renderDetailView(CARDS[nextIndex].id);
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  const i = CARDS.findIndex((c) => c.id === currentId);
+  openDetail(CARDS[(i + 1) % CARDS.length].id);
 });
 
-// Support opening directly on a card anchor (e.g. guide.html#instagram-ad)
-window.addEventListener("hashchange", () => {
-  const hashId = location.hash.replace(/^#/, "");
-  if (hashId && CARDS.some((c) => c.id === hashId)) {
-    openCardDetail(hashId);
-  } else if (!hashId) {
-    openCardList();
-  }
-});
-
-// Initial render of list view and optional deep-linked card
-renderListView();
-const initialHash = location.hash.replace(/^#/, "");
-if (initialHash && CARDS.some((c) => c.id === initialHash)) {
-  openCardDetail(initialHash);
-}
+renderList();
