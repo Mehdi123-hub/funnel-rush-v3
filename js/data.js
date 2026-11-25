@@ -15,13 +15,13 @@ export const PLAYER_COLORS = [
   { name: "Blue", hex: "#2F7BFF" },
 ];
 
-// Étapes du funnel (du froid vers le chaud)
+// Les 5 étapes du funnel (du froid vers le chaud)
 export const FLOORS = [
-  { id: "awareness", name: "Awareness", color: "#A3ACD6" },
-  { id: "interest", name: "Interest", color: "#739BFF" },
-  { id: "consideration", name: "Consideration", color: "#8673FF" },
-  { id: "conversion", name: "Conversion", color: "#D25FFF" },
-  { id: "loyalty", name: "Loyalty", color: "#FF73D2" },
+  { id: "awareness", name: "AWARENESS", color: "#A3ACD6" },
+  { id: "interest", name: "INTEREST", color: "#739BFF" },
+  { id: "consideration", name: "CONSIDERATION", color: "#8673FF" },
+  { id: "conversion", name: "CONVERSION", color: "#D25FFF" },
+  { id: "loyalty", name: "LOYALTY", color: "#FF73D2" },
 ];
 
 // Accès rapide aux étapes par identifiant
@@ -29,7 +29,7 @@ export const FUNNEL_FLOORS = Object.fromEntries(
   FLOORS.map((f) => [f.id, { label: f.name, color: f.color }])
 );
 
-// Catalogue des 15 cartes d'action
+// Catalogue complet des 15 cartes d'action
 export const CARDS = [
   { id: "instagram-ad", name: "Instagram Ad", floor: "awareness", cost: 3, level: 1, effect: "Move 4 prospects from Market to Awareness.", definition: "Paid social ads targeting specific audiences.", example: "Sponsoring a Story for fitness fans." },
   { id: "seo-article", name: "SEO Article", floor: "awareness", cost: 1, level: 1, effect: "Move 2 prospects from Market to Awareness.", definition: "Search-optimized article building organic traffic.", example: "Publishing a student budget guide." },
@@ -39,13 +39,13 @@ export const CARDS = [
   { id: "webinar", name: "Webinar", floor: "consideration", cost: 3, level: 1, effect: "Move 3 prospects from Interest to Consideration.", definition: "Live online session demonstrating value.", example: "30-minute live demo with Q&A." },
   { id: "customer-reviews", name: "Customer Reviews", floor: "consideration", cost: 2, level: 1, effect: "Move 2 prospects to Consideration. Cancels next Bad Review.", definition: "Ratings and testimonials building trust.", example: "Displaying verified buyer quotes." },
   { id: "marketing-automation", name: "Marketing Automation", floor: "consideration", cost: 4, level: 2, effect: "Move 2 Interest -> Consideration and 1 Awareness -> Interest.", definition: "Behavior-triggered automated messages.", example: "Welcome sequence after a download." },
+  { id: "retargeting", name: "Retargeting", floor: "consideration", cost: 3, level: 1, effect: "Bring 2 from Lost back to Consideration.", definition: "Ads re-engaging past visitors.", example: "Cart reminder ads." },
   { id: "free-trial", name: "Free Trial", floor: "conversion", cost: 4, level: 1, effect: "Move 3 prospects from Consideration to Conversion.", definition: "Risk-free trial period before buying.", example: "14-day full access trial." },
   { id: "promo-code", name: "Promo Code", floor: "conversion", cost: 2, level: 1, effect: "Move 2 prospects to Conversion. Revenue halved this round.", definition: "Discount driving immediate purchase.", example: "20% off first order." },
   { id: "ab-test", name: "A/B Test", floor: "conversion", cost: 3, level: 2, effect: "Move 2 to Conversion. Succeeds on die roll 2 or 3.", definition: "Comparing two variants to keep the best.", example: "Testing two checkout buttons." },
-  { id: "loyalty-program", name: "Loyalty Program", floor: "loyalty", cost: 3, level: 1, effect: "Move 2 customers from Conversion to Loyalty.", definition: "Rewards for repeat customers.", example: "Points earned on every order." },
+  { id: "loyalty-program", name: "Loyalty Program", floor: "loyalty", cost: 3, level: 1, effect: "Move 2 customers from Conversion to Loyalty.", definition: "Points, perks, or tiers reserved for existing customers to bring them back.", example: "Earning reward points on every order that can be redeemed for perks." },
   { id: "referral-program", name: "Referral Program", floor: "loyalty", cost: 3, level: 1, effect: "Move 1 to Loyalty and add 2 to Awareness.", definition: "Customers inviting friends for a reward.", example: "Bonus credit for referrer and friend." },
   { id: "customer-support", name: "Customer Support", floor: "loyalty", cost: 2, level: 2, effect: "Move 1 to Loyalty. No churn roll for you this round.", definition: "Post-purchase help retaining buyers.", example: "Fast onboarding and support." },
-  { id: "retargeting", name: "Retargeting", floor: "consideration", cost: 3, level: 1, effect: "Bring 2 from Lost back to Consideration.", definition: "Ads re-engaging past visitors.", example: "Cart reminder ads." },
 ];
 
 // Événements tirés au sort à chaque manche

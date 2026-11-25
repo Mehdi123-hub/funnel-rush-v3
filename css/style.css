@@ -1,4 +1,4 @@
-/* Variables de couleurs issues de la charte Slowly But Surely */
+/* Palette de couleurs Slowly But Surely */
 :root {
   --ink: #1B1040;
   --wall: #2B1E62;
@@ -23,17 +23,18 @@ button { cursor: pointer; border: 0; background: none; }
 a { color: inherit; text-decoration: none; }
 .hidden { display: none !important; }
 
-/* Conteneur principal occupant toute la hauteur d'écran */
+/* Conteneur mobile plein écran */
 .shell {
   max-width: 460px;
   min-height: 100dvh;
   margin: 0 auto;
-  padding: 24px 18px 28px;
+  padding: 22px 18px 28px;
   display: flex;
   flex-direction: column;
+  gap: 18px;
 }
 
-/* Chaque écran s'étire sur toute la hauteur disponible */
+/* Écrans étirés sur toute la hauteur de l'écran */
 .screen {
   flex: 1;
   display: flex;
@@ -44,18 +45,19 @@ a { color: inherit; text-decoration: none; }
 
 .top-bar {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
 }
 
-.logo-svg { height: 26px; width: auto; display: block; }
+.logo-svg { height: 24px; width: auto; display: block; }
 .logo-hero { height: 46px; margin: 0 auto; }
 
-.lvl-pill {
-  padding: 6px 14px;
+/* Pilules d'en-tête */
+.lvl-pill, .pill-outline {
+  padding: 6px 16px;
   border-radius: 999px;
-  border: 2px solid var(--violet);
+  border: 2px solid var(--white);
   font-family: "Permanent Marker", cursive;
   font-size: 0.78rem;
   letter-spacing: 0.04em;
@@ -65,20 +67,28 @@ a { color: inherit; text-decoration: none; }
 .lvl-pill.is-blue {
   background: var(--blue);
   border-color: var(--blue);
-  color: var(--white);
+}
+
+.pill-white {
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink);
+  font-family: "Permanent Marker", cursive;
+  font-size: 0.76rem;
 }
 
 .guide-pills {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 6px;
+  gap: 8px;
 }
 
-/* Accueil aéré sur tout l'écran */
+/* Accueil */
 .home-hero {
   text-align: center;
-  padding: 12px 0;
+  padding-top: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -97,6 +107,12 @@ a { color: inherit; text-decoration: none; }
   opacity: 0.85;
 }
 
+.tap-hint {
+  margin: 2px 0 0;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
 .section-label {
   display: block;
   font-family: "Permanent Marker", cursive;
@@ -104,7 +120,7 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 10px;
 }
 
-/* Cartes de niveau : Level 1 en bleu quand actif, Level 2 en rose */
+/* Cartes de choix de niveau : Level 1 en bleu, Level 2 en rose */
 .level-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -141,14 +157,9 @@ a { color: inherit; text-decoration: none; }
   border: 2px solid var(--white);
 }
 
-.lvl-name {
-  font-family: "Permanent Marker", cursive;
-  font-size: 1.15rem;
-}
-
+.lvl-name { font-family: "Permanent Marker", cursive; font-size: 1.15rem; }
 .lvl-desc { font-size: 0.82rem; opacity: 0.85; }
 
-/* Sélection Level 1 en bleu */
 .lvl-card.is-sel-1 {
   background: var(--white);
   border-color: var(--blue);
@@ -157,7 +168,6 @@ a { color: inherit; text-decoration: none; }
 .lvl-card.is-sel-1 .lvl-num { color: var(--blue); }
 .lvl-card.is-sel-1 .radio-dot { background: var(--blue); border-color: var(--ink); }
 
-/* Sélection Level 2 en rose */
 .lvl-card.is-sel-2 {
   background: var(--white);
   border-color: var(--pink);
@@ -166,7 +176,7 @@ a { color: inherit; text-decoration: none; }
 .lvl-card.is-sel-2 .lvl-num { color: var(--pink); }
 .lvl-card.is-sel-2 .radio-dot { background: var(--pink); border-color: var(--ink); }
 
-/* Boutons principaux et secondaires */
+/* Boutons d'action principaux et bouton SVG Cards */
 .cta-stack {
   display: flex;
   flex-direction: column;
@@ -185,14 +195,20 @@ a { color: inherit; text-decoration: none; }
   display: block;
 }
 
-.btn-main {
-  background: var(--pink);
-  color: var(--ink);
+.btn-main { background: var(--pink); color: var(--ink); }
+.btn-outline { border: 2px solid var(--white); color: var(--white); }
+
+.btn-svg-link {
+  display: block;
+  width: 100%;
+  border-radius: 999px;
+  overflow: hidden;
 }
 
-.btn-outline {
-  border: 2px solid var(--white);
-  color: var(--white);
+.btn-svg-img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .page-title {
@@ -203,8 +219,9 @@ a { color: inherit; text-decoration: none; }
 
 .page-head { display: flex; flex-direction: column; gap: 4px; }
 .stack { display: flex; flex-direction: column; gap: 12px; }
+.stack-lg { display: flex; flex-direction: column; gap: 22px; }
 
-/* Sélection nombre de joueurs et champs */
+/* Joueurs */
 .count-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -219,10 +236,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 1.5rem;
 }
 
-.count-btn.is-active {
-  background: var(--white);
-  color: var(--ink);
-}
+.count-btn.is-active { background: var(--white); color: var(--ink); }
 
 .player-row {
   display: flex;
@@ -254,7 +268,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 0.8rem;
 }
 
-/* Écran de manche et carte événement */
+/* Manches */
 .round-box { text-align: center; }
 
 .round-label {
@@ -277,12 +291,7 @@ a { color: inherit; text-decoration: none; }
   gap: 8px;
 }
 
-.r-bar {
-  height: 6px;
-  border-radius: 999px;
-  background: var(--wall);
-}
-
+.r-bar { height: 6px; border-radius: 999px; background: var(--wall); }
 .r-bar.is-on { background: var(--pink); }
 
 .event-wrap {
@@ -322,7 +331,6 @@ a { color: inherit; text-decoration: none; }
 }
 
 .event-head {
-  background: var(--pink);
   padding: 12px 18px;
   display: flex;
   align-items: center;
@@ -399,9 +407,7 @@ a { color: inherit; text-decoration: none; }
   gap: 6px;
 }
 
-.mission-pill.is-on {
-  background: var(--pink);
-}
+.mission-pill.is-on { background: var(--pink); }
 
 .metrics-4 {
   display: grid;
@@ -502,38 +508,102 @@ a { color: inherit; text-decoration: none; }
   flex-shrink: 0;
 }
 
-/* Guide des cartes : espacement aéré en vue détail */
+/* Guide des cartes (fidèle aux maquettes 11 et 12) */
+.guide-list-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .stage-chip {
   display: inline-block;
-  padding: 5px 12px;
+  align-self: flex-start;
+  padding: 5px 18px;
   border-radius: 999px;
   color: var(--ink);
   font-family: "Permanent Marker", cursive;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
 }
 
+/* Ligne blanche avec bande verticale colorée à gauche */
 .card-row-btn {
   width: 100%;
-  background: var(--wall);
-  border-left: 6px solid var(--accent, var(--pink));
+  background: var(--white);
+  color: var(--ink);
   border-radius: 14px;
-  padding: 14px 16px;
+  padding: 13px 16px 13px 22px;
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: "Permanent Marker", cursive;
-  font-size: 1rem;
+  font-weight: 700;
+  font-size: 1.05rem;
   text-align: left;
 }
 
-.cost-badge {
-  background: var(--pink);
-  color: var(--ink);
+.card-row-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 8px;
+  background: var(--accent, var(--pink));
+}
+
+.row-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.l2-pill {
+  background: var(--ink);
+  color: var(--white);
   padding: 3px 9px;
   border-radius: 999px;
-  font-family: "DM Mono", monospace;
-  font-size: 0.78rem;
-  font-weight: 500;
+  font-family: "Permanent Marker", cursive;
+  font-size: 0.72rem;
+}
+
+/* Pièce de coût blanche cerclée de rose */
+.coin-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 3px solid var(--pink);
+  box-shadow: 0 0 0 1.5px var(--ink);
+  display: grid;
+  place-items: center;
+  font-family: "Permanent Marker", cursive;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+.coin-circle.is-lg {
+  width: 52px;
+  height: 52px;
+  border-width: 5px;
+  box-shadow: 0 0 0 2px var(--ink);
+  font-size: 1.45rem;
+  flex-shrink: 0;
+}
+
+.chev { opacity: 0.45; font-size: 1.2rem; }
+
+/* Vue détail d'une carte */
+.detail-top {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.back-link {
+  align-self: flex-start;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 4px 0;
 }
 
 .detail-wrap {
@@ -541,38 +611,65 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 8px 0;
 }
 
 .detail-card {
   background: var(--white);
   color: var(--ink);
-  border-radius: 24px;
-  padding: 24px 20px;
+  border-radius: 26px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+}
+
+/* Bandeau supérieur coloré selon l'étape */
+.detail-stripe {
+  height: 16px;
+  background: var(--accent, var(--pink));
+}
+
+.detail-body {
+  padding: 24px 22px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.detail-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .detail-title {
   margin: 0;
   font-family: "Permanent Marker", cursive;
-  font-size: 1.85rem;
+  font-size: 2rem;
+  line-height: 1.15;
 }
 
 .detail-block {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding-top: 12px;
-  border-top: 1px solid #E5E7EB;
+  gap: 6px;
+  padding-top: 16px;
+  border-top: 1.5px solid #E5E7EB;
 }
 
 .detail-label {
-  font-family: "DM Mono", monospace;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  opacity: 0.65;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.detail-text {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.detail-text.is-muted {
+  opacity: 0.72;
 }
 
 /* Modales */

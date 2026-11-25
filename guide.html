@@ -3,35 +3,45 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Slowly But Surely — Cards</title>
+  <title>Slowly But Surely — Card guide</title>
+  <!-- Typographies Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fredoka:wght@600;700&family=Kalam:wght@400;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Kalam:wght@400;700&family=Permanent+Marker&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/style.css">
   <script type="module" src="./js/guide.js"></script>
 </head>
 <body>
   <main class="shell">
-    <!-- Barre haute avec logo SVG à gauche et retour vers la partie en cours -->
+    <!-- Barre haute : logo SVG à gauche, pilules BACK TO GAME et 15 CARDS à droite -->
     <header class="top-bar">
       <a href="./index.html"><img src="./assets/logo.svg" alt="slowly but surely" class="logo-svg"></a>
       <div class="guide-pills">
-        <a href="./index.html" class="lvl-pill is-blue">BACK TO GAME</a>
-        <span class="lvl-pill">15 CARDS</span>
+        <a href="./index.html" class="pill-outline">BACK TO GAME</a>
+        <span class="pill-white">15 CARDS</span>
       </div>
     </header>
 
-    <!-- Vue liste des cartes groupées par étape du funnel -->
-    <section id="guide-list-view" class="screen">
-      <h1 class="page-title">Cards</h1>
-      <div id="guide-groups" class="stack"></div>
+    <!-- Vue 1 : liste complète des 15 cartes par étape -->
+    <section id="guide-list-view" class="guide-list-screen">
+      <div class="page-head">
+        <h1 class="page-title">Card guide</h1>
+        <p class="page-sub">All 15 cards, by stage · L2 = level 2</p>
+        <p class="tap-hint">Tap a card to open it.</p>
+      </div>
+      <div id="guide-groups" class="stack-lg"></div>
     </section>
 
-    <!-- Vue détail d'une carte plein écran espacé -->
+    <!-- Vue 2 : détail plein écran espacé d'une carte -->
     <section id="guide-detail-view" class="screen hidden">
-      <button id="btn-back-to-list" type="button" class="btn-outline">ALL CARDS</button>
+      <div class="detail-top">
+        <button id="btn-back-to-list" type="button" class="back-link">&lsaquo;&nbsp;&nbsp;All cards</button>
+        <div id="detail-stage-pill"></div>
+      </div>
+
       <div id="guide-detail-content" class="detail-wrap"></div>
-      <button id="btn-next-card" type="button" class="btn-main">NEXT CARD</button>
+
+      <button id="btn-next-card" type="button" class="btn-outline">NEXT CARD</button>
     </section>
   </main>
 </body>
